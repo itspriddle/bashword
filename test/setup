@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+
+clone() {
+  local repo="$1" dest="$2"
+
+  git clone -q "https://github.com/bats-core/$repo.git" "$dest"
+}
+
+if [ ! -d test/bats ]; then
+  echo "Cloning bats-core v1.3.0..."
+  (
+    clone bats-core test/bats &&
+      git -C test/bats checkout -q v1.3.0
+  )
+fi
+
+if [ ! -d test/test_helper/bats-support ]; then
+  echo "Cloning bats-support..."
+  clone bats-support test/test_helper/bats-support
+fi
+
+if [ ! -d test/test_helper/bats-assert ]; then
+  echo "Cloning bats-assert..."
+  clone bats-assert test/test_helper/bats-assert
+fi
