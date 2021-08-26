@@ -160,6 +160,13 @@ Generate passwords for the given users
 \[Do] \[lC] echo user1; echo user2; echo user3 \[rC] \[or] paste \- <(bashword \-c 3)
 .fi
 .LP
+.SH WORD LISTS
+.LP
+.PP
+By default passphrases are generated using \fB/usr/share/dict/words\fR\. If that
+file does not exist, one will be downloaded automatically from GitHub under
+\fB/tmp/bashwords-words\fR\.
+.LP
 .SH BUG REPORTS
 .LP
 .PP

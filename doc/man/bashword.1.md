@@ -119,6 +119,12 @@ Generate passwords for the given users
 
     $ { echo user1; echo user2; echo user3 } | paste - <(bashword -c 3)
 
+## WORD LISTS
+
+By default passphrases are generated using `/usr/share/dict/words`. If that
+file does not exist, one will be downloaded automatically from GitHub under
+`/tmp/bashwords-words`.
+
 ## BUG REPORTS
 
 Issues can be reported on GitHub:

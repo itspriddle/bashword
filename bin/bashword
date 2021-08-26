@@ -118,7 +118,9 @@
 #     $ bashword -P -l 5 -c 4
 #
 # WORD LISTS
-#   TODO
+#   By default passphrases are generated using `/usr/share/dict/words`. If
+#   that file does not exist, one will be downloaded automatically from GitHub
+#   under `/tmp/bashwords-words`.
 #
 # SEE ALSO
 #   random(4)
