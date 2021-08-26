@@ -23,7 +23,7 @@ jobs:
           TERM: linux
         run: |
           curl -s -L "https://gist.github.com/itspriddle/3527c7018aeb32f456c3cfa3f6b5c22f/raw/0714192788a8f0336648adae9c4c8be2d5e8d2d3/words.gz" | gunzip > /tmp/bashwords-words
-          { trap '' pipe; LC_CTYPE=C LC_ALL=C tr -dc "[:alpha:]" < /dev/urandom } | dd bs=1 count="1" 2>/dev/null || true
+          LC_CTYPE=C LC_ALL=C tr -dc "[:alpha:]" < /dev/urandom 2>/dev/null | dd bs=1 count="1" 2>/dev/null || true
           # wc -l /usr/share/dict/words
           bash --version
           make test-bats
