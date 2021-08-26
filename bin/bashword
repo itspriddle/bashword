@@ -248,8 +248,7 @@ get_char() {
 
   # Grep -v is nasty here to avoid "tr: write error: Broken pipe" errors on gh
   # actions
-  LC_CTYPE=C LC_ALL=C tr -dc "$charset" < /dev/urandom 2> >(grep -v "write error" >&2) |
-    head -c "$length" || true
+  LC_CTYPE=C LC_ALL=C tr -dc "$charset" < /dev/urandom 2> | head -c "$length" || true
 
   # Helps sort randomize
   echo " $RANDOM"
