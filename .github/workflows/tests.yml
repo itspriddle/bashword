@@ -23,14 +23,14 @@ jobs:
           bash --version
           make test-bats
 
-  # windows:
-  #   runs-on: windows-2019
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Run bats tests on Windows
-  #       run: |
-  #         bash --version
-  #         make test-bats
+  windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run bats tests on Windows
+        run: |
+          bash --version
+          make test-bats
 
   # macos:
   #   runs-on: macos-11
