@@ -324,8 +324,24 @@ main() {
         return 0
         ;;
       -l|--length)
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
         length="$2"
         shift 2
+        ;;
+      -l*)
+        length="${1:2}"
+        shift
+        ;;
+      --length=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        length="${1#*=}"
+        shift
         ;;
       -p|--passphrase)
         style=passphrase
@@ -352,33 +368,132 @@ main() {
         shift
         ;;
       -F|--dictionary-file)
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
         dictionary_file="$2"
         shift 2
+        ;;
+      -F*)
+        dictionary_file="${1:2}"
+        shift
+        ;;
+      --dictionary-file=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        dictionary_file="${1#*=}"
+        shift
         ;;
       -U|--upcase)
         upcase=1
         shift
         ;;
       -d|--delimiter)
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
         delimiter="$2"
         shift 2
         ;;
+      -d*)
+        delimiter="${1:2}"
+        shift
+        ;;
+      --delimiter=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        delimiter="${1#*=}"
+        shift
+        ;;
       -m|--min-word-length)
-        min_word_length="${2:?Must specify value}"
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        min_word_length="$2"
         shift 2
         ;;
+      -m*)
+        max_word_length="${1:2}"
+        shift
+        ;;
+      --min-word-length=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        min_word_length="${1#*=}"
+        shift
+        ;;
       -M|--max-word-length)
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
         max_word_length="$2"
         shift 2
         ;;
+      -M*)
+        max_word_length="${1:2}"
+        shift
+        ;;
+      --max-word-length=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        max_word_length="${1#*=}"
+        shift
+        ;;
       -L|--word-length)
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
         min_word_length="$2"
         max_word_length="$2"
         shift 2
         ;;
+      -L*)
+        min_word_length="${1:2}"
+        max_word_length="${1:2}"
+        shift
+        ;;
+      --word-length=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        min_word_length="${1#*=}"
+        max_word_length="${1#*=}"
+        shift
+        ;;
       -c|--count)
+        if [[ -z "${2-}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
         count="$2"
         shift 2
+        ;;
+      -c*)
+        count="${1:2}"
+        shift
+        ;;
+      --count=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        min_word_length="${1#*=}"
+        max_word_length="${1#*=}"
+        shift
         ;;
       -h|--help)
         sed -ne '/^#/!q;s/^#$/# /;/^# /s/^# //p' < "$0" |
