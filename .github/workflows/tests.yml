@@ -35,17 +35,17 @@ jobs:
           bash -c "time ./test/setup"
           bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats -t test"
 
-  # macos:
-  #   runs-on: macos-11
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install unbuffer via expect
-  #       run: brew install expect
-  #     - name: Run bats tests on macOS
-  #       shell: 'unbuffer bash {0}'
-  #       env:
-  #         TERM: linux
-  #       run: |
-  #         bash --version
-  #         bash -c "time ./test/setup"
-  #         bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats -t test"
+  macos:
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install unbuffer via expect
+        run: brew install expect
+      - name: Run bats tests on macOS
+        shell: 'unbuffer bash {0}'
+        env:
+          TERM: linux
+        run: |
+          bash --version
+          bash -c "time ./test/setup"
+          bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats -t test"
