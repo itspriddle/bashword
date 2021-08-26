@@ -23,7 +23,7 @@ jobs:
           TERM: linux
         run: |
           curl -s -L "https://gist.github.com/itspriddle/3527c7018aeb32f456c3cfa3f6b5c22f/raw/0714192788a8f0336648adae9c4c8be2d5e8d2d3/words.gz" | gunzip > /tmp/bashwords-words
-          wc -l /usr/share/dict/words
+          # wc -l /usr/share/dict/words
           bash --version
           make test-bats
 
