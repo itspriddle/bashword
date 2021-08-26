@@ -30,6 +30,7 @@ load test_helper
 
 @test "bashword --no-symbols: generates a password with no symbols" {
   run bashword --no-symbols
+
   assert_output --regexp "^[^[:punct:]]+$"
   assert_success
 }
@@ -44,7 +45,7 @@ load test_helper
 @test "bashword --count COUNT: generates multiple passwords" {
   run bashword --count 3
 
-  assert [ "${#lines[*]}" -eq 3 ]
+  assert_equal "${#lines[*]}" 3
 
   echo "${lines[0]}" | grep -E -q "^[[:alnum:][:punct:]]{20}$" ||
     fail "line 0: ${lines[0]} didn't match expression"
@@ -67,6 +68,7 @@ load test_helper
 
 @test "bashword --passphrase --length LENGTH: generates a passphrase with the specified number of words" {
   run bashword --passphrase --length 4
+
   assert_output --regexp "^[[:lower:]]{5,8}-[[:lower:]]{5,8}-[[:lower:]]{5,8}-[[:lower:]]{5,8}$"
   assert_success
 }
@@ -103,8 +105,7 @@ load test_helper
 @test "bashword --passphrase --count COUNT: generates the given number of passphrases" {
   run bashword --passphrase --count 3
 
-  assert [ "${#lines[*]}" -eq 3 ]
-  assert_success
+  assert_equal "${#lines[*]}" 3
 
   echo "${lines[0]}" |
     grep -E -q "^[[:lower:]]{5,10}-[[:lower:]]{5,10}-[[:lower:]]{5,10}$" ||
@@ -138,7 +139,7 @@ load test_helper
 @test "bashword --pin --count COUNT: generates the given number of PINs" {
   run bashword --pin --count 3
 
-  assert [ "${#lines[*]}" -eq 3 ]
+  assert_equal "${#lines[*]}" 3
 
   echo "${lines[0]}" | grep -E -q "^[0-9]{4}$" ||
     fail "line 0: ${lines[0]} didn't match expression"
