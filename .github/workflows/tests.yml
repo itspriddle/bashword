@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run shellcheck
         run: |
-          make test-shellcheck
+          bash -c "time make test-shellcheck"
 
   linux:
     runs-on: ubuntu-20.04
@@ -21,7 +21,8 @@ jobs:
           TERM: linux
         run: |
           bash --version
-          make test-bats
+          # make test-bats
+          bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 make test-bats"
 
   windows:
     runs-on: windows-2019
@@ -32,7 +33,7 @@ jobs:
           bash --version
           make bats-setup
           # make test-bats
-          bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats --formatter tap test"
+          bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 make test-bats"
 
   # macos:
   #   runs-on: macos-11
