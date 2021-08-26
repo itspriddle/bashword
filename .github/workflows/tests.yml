@@ -22,6 +22,7 @@ jobs:
         env:
           TERM: linux
         run: |
+          wc -l /usr/share/dict/words
           bash --version
           make test-bats
 
