@@ -23,7 +23,7 @@ jobs:
           TERM: linux
         run: |
           bash --version
-          make bats
+          make test-bats
 
   # windows:
   #   runs-on: windows-2019
@@ -32,7 +32,7 @@ jobs:
   #     - name: Run bats tests on Windows
   #       run: |
   #         bash --version
-  #         make bats
+  #         make test-bats
 
   # macos:
   #   runs-on: macos-11
@@ -46,4 +46,4 @@ jobs:
   #         TERM: linux
   #       run: |
   #         bash --version
-  #         make bats
+  #         make test-bats
