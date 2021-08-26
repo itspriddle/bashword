@@ -18,13 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run bats tests on Ubuntu
-        # shell: 'script -q -e -c "bash {0}"'
+        shell: 'script -q -e -c "bash {0}"'
         env:
           TERM: linux
         run: |
-          curl -s -L "https://gist.github.com/itspriddle/3527c7018aeb32f456c3cfa3f6b5c22f/raw/0714192788a8f0336648adae9c4c8be2d5e8d2d3/words.gz" | gunzip > /tmp/bashwords-words
-          LC_CTYPE=C LC_ALL=C tr -dc "[:alpha:]" </dev/urandom 2>/dev/null | head -c 1 || true
-          # wc -l /usr/share/dict/words
           bash --version
           make test-bats
 
