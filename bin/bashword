@@ -246,7 +246,7 @@ get_word_list() {
 get_char() {
   local charset="$1" length="${2:-1}"
 
-  LC_CTYPE=C LC_ALL=C tr -dc "$charset" < /dev/urandom |
+  LC_CTYPE=C LC_ALL=C tr -dc "$charset" < /dev/urandom 2> >(grep -v "write error" >&2) |
     head -c "$length" || true
 
   # Helps sort randomize
