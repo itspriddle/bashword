@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   shellcheck:
@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run bats tests on Ubuntu
-        shell: 'script -q -e -c "bash {0}"'
+        # shell: 'script -q -e -c "bash {0}"'
         env:
           TERM: linux
         run: |
