@@ -1,0 +1,49 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run shellcheck
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install shellcheck
+          make test-shellcheck
+
+  linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run bats tests on Ubuntu
+        shell: 'script -q -e -c "bash {0}"'
+        env:
+          TERM: linux
+        run: |
+          bash --version
+          make bats
+
+  # windows:
+  #   runs-on: windows-2019
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Run bats tests on Windows
+  #       run: |
+  #         bash --version
+  #         make bats
+
+  # macos:
+  #   runs-on: macos-11
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Install unbuffer via expect
+  #       run: brew install expect
+  #     - name: Run bats tests on macOS
+  #       shell: 'unbuffer bash {0}'
+  #       env:
+  #         TERM: linux
+  #       run: |
+  #         bash --version
+  #         make bats
