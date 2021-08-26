@@ -29,7 +29,7 @@ long\.
 .SH OPTIONS
 .LP
 .TP
-\fI\-l\fP, \fI\-\-length LENGTH\fP
+\fI\-l LENGTH\fP, \fI\-\-length LENGTH\fP
 For passwords and PINs, this option specifies the total number of
 characters used, and defaults to 20 for passwords and 4 for PINs\. For
 passphrases, this option specifies the total number of words used, and
@@ -66,12 +66,12 @@ For passwords, this option will force the password to include no
 symbols at all\. For passphrases and PINs, this option has no effect\.
 .LP
 .TP
-\fI\-d\fP, \fI\-\-delimiter CHAR\fP
+\fI\-d CHAR\fP, \fI\-\-delimiter CHAR\fP
 For passphrases, this option is the character that is used between
 words\. For passwords and PINs, this option has no effect\.
 .LP
 .TP
-\fI\-F\fP, \fI\-\-dictionary\-file PATH\fP
+\fI\-F PATh\fP, \fI\-\-dictionary\-file PATH\fP
 For passphrases, this option specifies the path to a dictionary file
 used to select words for the passphrase, and defaults to
 \fB/usr/share/dict/words\fR\. If the default file cannot be found, a
@@ -85,26 +85,26 @@ randomly UPCASED, and defaults to off\. For passwords and PINs, this
 option has no effect\.
 .LP
 .TP
-\fI\-m\fP, \fI\-\-min\-word\-length LENGTH\fP
+\fI\-m LENGTH\fP, \fI\-\-min\-word\-length LENGTH\fP
 For passphrases, this option will choose words in the passphrase at
 least LENGTH characters long\. Defaults to 5\. For passwords and PINs,
 this option is has no effect\.
 .LP
 .TP
-\fI\-M\fP, \fI\-\-max\-word\-length LENGTH\fP
+\fI\-M LENGTH\fP, \fI\-\-max\-word\-length LENGTH\fP
 For passphrases, this option will choose words in the passphrase at
 most LENGTH characters long\. Defaults to 8\. For passwords and PINs,
 this option is has no effect\.
 .LP
 .TP
-\fI\-L\fP, \fI\-\-word\-length LENGTH\fP
+\fI\-L LENGTH\fP, \fI\-\-word\-length LENGTH\fP
 For passphrases, this option will choose words in the passphrase at
 exactly LENGTH characters long\. This is the same as specifying a min
 and max word length of the same value\. For passwords and PINs, this
 option is has no effect\.
 .LP
 .TP
-\fI\-c\fP, \fI\-\-count COUNT\fP
+\fI\-c COUNT\fP, \fI\-\-count COUNT\fP
 If set, generate COUNT passwords, passphrases, or PINs\. Default is 1\.
 Optional\.
 .LP
@@ -173,7 +173,7 @@ https:\[sl]\[sl]github\.com\[sl]itspriddle\[sl]bashword\[sl]issues
 .SH AUTHOR
 .LP
 .PP
-Joshua Priddle
+Joshua Priddle 
 .MT jpriddle\[at]me\.com
 .ME
 .LP
@@ -186,7 +186,7 @@ https:\[sl]\[sl]github\.com\[sl]itspriddle\[sl]bashword\[sh]readme
 MIT License
 .LP
 .PP
-Copyright (c) 2021 Joshua Priddle
+Copyright (c) 2021 Joshua Priddle 
 .MT jpriddle\[at]me\.com
 .ME
 .LP
@@ -214,4 +214,4 @@ SOFTWARE\.
 .SH SEE ALSO
 .LP
 .PP
-TODO (1)
+RANDOM(4)
