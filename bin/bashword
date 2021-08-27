@@ -422,7 +422,7 @@ main() {
         shift 2
         ;;
       -m*)
-        max_word_length="${1:2}"
+        min_word_length="${1:2}"
         shift
         ;;
       --min-word-length=*)
@@ -493,8 +493,7 @@ main() {
           warn "Must specify value for '$1'"
           return 1
         fi
-        min_word_length="${1#*=}"
-        max_word_length="${1#*=}"
+        count="${1#*=}"
         shift
         ;;
       -h|--help)
