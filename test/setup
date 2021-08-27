@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu
 
 clone() {
-  local repo="$1" dest="$2"
+  local repo="$1" branch="$2" dest="$3"
 
-  git clone -q "https://github.com/bats-core/$repo.git" "$dest"
+  if [ -d "$dest" ]; then
+    echo "  - Found $repo at $dest, not cloning..." >&2
+    return 0
+  fi
+
+  echo "  - Cloning $repo $branch to $dest..." >&2
+
+  git clone --quiet \
+    --depth 1 \
+    --no-single-branch \
+    --branch "$branch" \
+    "https://github.com/bats-core/$repo.git" "$dest" 2> /dev/null || {
+      echo "  - Couldn't clone $repo" >&2
+      return 1
+    }
 }
 
-if [ ! -d test/bats ]; then
-  echo "Cloning bats-core v1.3.0..."
-  (
-    clone bats-core test/bats &&
-      git -C test/bats checkout -q v1.3.0
-  )
-fi
+echo "Setting up test environment..."
 
-if [ ! -d test/test_helper/bats-support ]; then
-  echo "Cloning bats-support..."
-  clone bats-support test/test_helper/bats-support
-fi
-
-if [ ! -d test/test_helper/bats-assert ]; then
-  echo "Cloning bats-assert..."
-  clone bats-assert test/test_helper/bats-assert
-fi
+clone bats-core    v1.3.0 test/bats
+clone bats-support master test/test_helper/bats-support
+clone bats-assert  master test/test_helper/bats-assert
