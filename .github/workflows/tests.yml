@@ -13,6 +13,7 @@ jobs:
           bash -c "time make test-shellcheck"
 
   linux:
+    name: bats - Ubuntu
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +27,7 @@ jobs:
           bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats -t test"
 
   windows:
+    name: bats - Windows
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
@@ -36,6 +38,7 @@ jobs:
           bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats -t test"
 
   macos:
+    name: bats - macOS
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
