@@ -213,8 +213,9 @@ Documentation for this project exists in:
 If documentation is updated it should be done in all of the places above.
 
 The man page is written in Markdown in the
-[`doc/man/bashword.1.md`](./doc/man/bashword.1.md) file. The [kramdown-man][]
-Ruby Gem is used to generate a roff file that `man` uses.
+[`doc/man/bashword.1.md`](./doc/man/bashword.1.md) file. The
+[kramdown-man](https://github.com/postmodern/kramdown-man) Ruby Gem is used to
+generate a roff file that `man` uses.
 
 If you have Ruby installed, the kramdown-man gem can be installed as follows:
 
