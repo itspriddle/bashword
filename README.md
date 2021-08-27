@@ -1,12 +1,25 @@
-# bashword -- pure bash password generator
+# bashword -- pure Bash password generator
+
+`bashword` is a password generator written in
+[Bash](https://www.gnu.org/software/bash/). It has no dependencies other than
+Bash and is designed to work on the versions shipped with macOS, Linux, and
+Windows WSL.
+
+Attempts have been made to ensure `bashword` generates random results, but it
+is not meant to be a cryptographically secure program. It is mainly intended
+to supplement a password manager like [1Password](https://1password.com),
+[LastPass](https://www.lastpass.com), or [BitWarden](https://bitwarden.com) by
+providing a quick way to generate a password that the manager can auto-save.
+
+The main goal of `bashword` is to encourage healthy password practices by
+providing an easy to use tool that can be very quickly installed across a
+variety of modern computers.
 
 ## Usage
 
-Generates passwords, passphrases, or PINs.
-
-By default, bashword generates passwords 20 characters in length that include
-at least: one number, one symbol, one lower case character, and one upper case
-character.
+By default, `bashword` generates passwords 20 characters in length that
+include at least: one number, one symbol, one lower case character, and one
+upper case character.
 
 Passphrases can be generated from a word list using the `--passphrase` option.
 By default passphrases are 3 words separated by `-` using words between 5 and
@@ -115,18 +128,11 @@ Generate passwords for the given users
 
     $ { echo user1; echo user2; echo user3 } | paste - <(bashword -c 3)
 
-### Should I use this?
-
-Maybe. You _should_ use a password manager like 1Password, LastPass, or
-BitWarden.
-
-`bashword` makes attempts to ensure password entropy but this is not meant to
-be a cryptographically secure program.
-
 ## Installation
 
-bashword includes the main [`bin/bashword`](./bin/bashword) bash script and an
-optional man page [`share/man/man1/bashword.1`](./share/man/man1/bashword.1).
+`bashword` includes the main [`bin/bashword`](./bin/bashword) bash script and
+an optional man page
+[`share/man/man1/bashword.1`](./share/man/man1/bashword.1).
 
 To install `bashword`, the bash script needs to be copied to a directory in
 your `$PATH`. If you want `man bashword` to work, the man page needs to be
@@ -166,7 +172,7 @@ using ZSH, add it to `~/.zshenv`:
 
 If `man bashword` reports `No manual entry for bashword`, you need to update
 your `$MANPATH`. This can be done by adding the following to `~/.manpath`
-(note, change USER to your username:
+(note, change USER to your username):
 
     MANDATORY_MANPATH /home/USER/.manpath
 
