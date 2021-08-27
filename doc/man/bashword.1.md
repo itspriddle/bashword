@@ -91,21 +91,21 @@ long.
     Prints help text and exits.
 
 *-V*, *--version*  
-    Prints the bashword version and exit 0.
+    Prints the bashword version and exits.
 
 ## EXAMPLES
 
-Generate a 20 character password with 2 digits and 2 symbols
+Generate a 20 character password with digits and symbols
 
     $ bashword
 
-Generate a 30 character password with 2 digits and 3 symbols
+Generate a 30 character password with digits and symbols
 
-    $ bashword -l 30 -d 2 -s 3
+    $ bashword -l 30
 
 Generate a 10 character password with only alphanumeric characters
 
-    $ bashword -s 0 -l 10
+    $ bashword -S -l 10
 
 Generate a 3 word passphrase
 

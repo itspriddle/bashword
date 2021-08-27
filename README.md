@@ -17,7 +17,7 @@ long.
 
 ### Options
 
-*-l*, *--length LENGTH*  
+*-l LENGTH*, *--length LENGTH*  
     For passwords and PINs, this option specifies the total number of
     characters used, and defaults to 20 for passwords and 4 for PINs. For
     passphrases, this option specifies the total number of words used, and
@@ -47,11 +47,11 @@ long.
     For passwords, this option will force the password to include no
     symbols at all. For passphrases and PINs, this option has no effect.
 
-*-d*, *--delimiter CHAR*  
+*-d CHAR*, *--delimiter CHAR*  
     For passphrases, this option is the character that is used between
     words. For passwords and PINs, this option has no effect.
 
-*-F*, *--dictionary-file PATH*  
+*-F PATH*, *--dictionary-file PATH*  
     For passphrases, this option specifies the path to a dictionary file
     used to select words for the passphrase, and defaults to
     `/usr/share/dict/words`. If the default file cannot be found, a
@@ -63,23 +63,23 @@ long.
     randomly UPCASED, and defaults to off. For passwords and PINs, this
     option has no effect.
 
-*-m*, *--min-word-length LENGTH*  
+*-m LENGTH*, *--min-word-length LENGTH*  
     For passphrases, this option will choose words in the passphrase at
     least LENGTH characters long. Defaults to 5. For passwords and PINs,
     this option is has no effect.
 
-*-M*, *--max-word-length LENGTH*  
+*-M LENGTH*, *--max-word-length LENGTH*  
     For passphrases, this option will choose words in the passphrase at
     most LENGTH characters long. Defaults to 8. For passwords and PINs,
     this option is has no effect.
 
-*-L*, *--word-length LENGTH*  
+*-L LENGTH*, *--word-length LENGTH*  
     For passphrases, this option will choose words in the passphrase at
     exactly LENGTH characters long. This is the same as specifying a min
     and max word length of the same value. For passwords and PINs, this
     option is has no effect.
 
-*-c*, *--count COUNT*  
+*-c COUNT*, *--count COUNT*  
     If set, generate COUNT passwords, passphrases, or PINs. Default is 1.
     Optional.
 
@@ -87,21 +87,21 @@ long.
     Prints help text and exits.
 
 *-V*, *--version*  
-    Prints the bashword version and exit 0.
+    Prints the bashword version and exits.
 
 ### Examples
 
-Generate a 20 character password with 2 digits and 2 symbols
+Generate a 20 character password with digits and symbols
 
     $ bashword
 
-Generate a 30 character password with 2 digits and 3 symbols
+Generate a 30 character password with digits and symbols
 
-    $ bashword -l 30 -d 2 -s 3
+    $ bashword -l 30
 
 Generate a 10 character password with only alphanumeric characters
 
-    $ bashword -s 0 -l 10
+    $ bashword -S -l 10
 
 Generate a 3 word passphrase
 
