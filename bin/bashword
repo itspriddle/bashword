@@ -23,7 +23,7 @@
 #   digits long.
 #
 # OPTIONS
-#   -l LENGTH, --length LENGTH
+#   -[LENGTH], --length LENGTH
 #       For passwords and PINs, this option specifies the total number of
 #       characters used, and defaults to 20 for passwords and 4 for PINs. For
 #       passphrases, this option specifies the total number of words used, and
@@ -100,22 +100,22 @@
 #     $ bashword
 #
 #   Generate a 30 character password with digits and symbols
-#     $ bashword -l 30
+#     $ bashword -30
 #
 #   Generate a 10 character password with only alphanumeric characters
-#     $ bashword -S -l 10
+#     $ bashword -S -10
 #
 #   Generate a 3 word passphrase
 #     $ bashword -p
 #
 #   Generate a 5 word passphrase using ~/list.txt
-#     $ bashword -p -F ~/list.txt -l 5
+#     $ bashword -p -F ~/list.txt -5
 #
 #   Generate passwords for the given users
 #     $ { echo user1; echo user2; echo user3 } | paste - <(bashword -c 3)
 #
 #   Generate 4 PIN numbers with 5 digits
-#     $ bashword -P -l 5 -c 4
+#     $ bashword -P -5 -c 4
 #
 # WORD LISTS
 #   By default passphrases are generated using `/usr/share/dict/words`. If
@@ -325,17 +325,17 @@ main() {
         echo "${0##*/} v$BASHWORD_VERSION"
         return 0
         ;;
-      -l|--length)
+      -[0-9]*)
+        length="${1:1}"
+        shift
+        ;;
+      --length)
         if [[ -z "${2-}" ]]; then
           warn "Must specify value for '$1'"
           return 1
         fi
         length="$2"
         shift 2
-        ;;
-      -l*)
-        length="${1:2}"
-        shift
         ;;
       --length=*)
         if [[ -z "${1#*=}" ]]; then
