@@ -30,7 +30,7 @@ long.
 
 ### Options
 
-*-l LENGTH*, *--length LENGTH*  
+*-LENGTH*, *--length LENGTH*  
     For passwords and PINs, this option specifies the total number of
     characters used, and defaults to 20 for passwords and 4 for PINs. For
     passphrases, this option specifies the total number of words used, and
@@ -110,11 +110,11 @@ Generate a 20 character password with digits and symbols
 
 Generate a 30 character password with digits and symbols
 
-    $ bashword -l 30
+    $ bashword -30
 
 Generate a 10 character password with only alphanumeric characters
 
-    $ bashword -S -l 10
+    $ bashword -S -10
 
 Generate a 3 word passphrase
 
@@ -122,7 +122,7 @@ Generate a 3 word passphrase
 
 Generate a 5 word passphrase using ~/list.txt
 
-    $ bashword -p -F ~/list.txt -l 5
+    $ bashword -p -F ~/list.txt -5
 
 Generate passwords for the given users
 
