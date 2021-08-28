@@ -29,7 +29,7 @@ long\.
 .SH OPTIONS
 .LP
 .TP
-\fI\-l LENGTH\fP, \fI\-\-length LENGTH\fP
+\fI\-LENGTH\fP, \fI\-\-length LENGTH\fP
 For passwords and PINs, this option specifies the total number of
 characters used, and defaults to 20 for passwords and 4 for PINs\. For
 passphrases, this option specifies the total number of words used, and
@@ -129,14 +129,14 @@ Generate a 20 character password with digits and symbols
 Generate a 30 character password with digits and symbols
 .LP
 .nf
-\[Do] bashword \-l 30
+\[Do] bashword \-30
 .fi
 .LP
 .PP
 Generate a 10 character password with only alphanumeric characters
 .LP
 .nf
-\[Do] bashword \-S \-l 10
+\[Do] bashword \-S \-10
 .fi
 .LP
 .PP
@@ -150,7 +150,7 @@ Generate a 3 word passphrase
 Generate a 5 word passphrase using \[ti]\[sl]list\.txt
 .LP
 .nf
-\[Do] bashword \-p \-F \[ti]\[sl]list\.txt \-l 5
+\[Do] bashword \-p \-F \[ti]\[sl]list\.txt \-5
 .fi
 .LP
 .PP

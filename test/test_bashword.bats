@@ -19,10 +19,7 @@ load test_helper
   run bashword --length=35
   _assert_results
 
-  run bashword -l 35
-  _assert_results
-
-  run bashword -l35
+  run bashword -35
   _assert_results
 }
 
@@ -132,10 +129,10 @@ load test_helper
   run bashword --passphrase --length=4
   _assert_results
 
-  run bashword -p -l 4
+  run bashword -p -4
   _assert_results
 
-  run bashword -p -l4
+  run bashword -p -4
   _assert_results
 }
 
@@ -286,10 +283,10 @@ load test_helper
   run bashword --pin --length=6
   _assert_results
 
-  run bashword --pin -l6
+  run bashword --pin -6
   _assert_results
 
-  run bashword --pin -l 6
+  run bashword --pin -6
   _assert_results
 }
 
