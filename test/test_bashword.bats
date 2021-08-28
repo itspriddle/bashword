@@ -148,10 +148,10 @@ load test_helper
   run bashword --passphrase --word-length=6
   _assert_results
 
-  run bashword --passphrase -L 6
+  run bashword --passphrase -w 6
   _assert_results
 
-  run bashword --passphrase -L6
+  run bashword --passphrase -w6
   _assert_results
 }
 

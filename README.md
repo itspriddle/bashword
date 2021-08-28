@@ -86,7 +86,7 @@ long.
     most LENGTH characters long. Defaults to 8. For passwords and PINs,
     this option is has no effect.
 
-*-L LENGTH*, *--word-length LENGTH*  
+*-w LENGTH*, *--word-length LENGTH*  
     For passphrases, this option will choose words in the passphrase at
     exactly LENGTH characters long. This is the same as specifying a min
     and max word length of the same value. For passwords and PINs, this
