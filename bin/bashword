@@ -25,9 +25,11 @@
 # OPTIONS
 #   -[LENGTH], --length LENGTH
 #       For passwords and PINs, this option specifies the total number of
-#       characters used, and defaults to 20 for passwords and 4 for PINs. For
-#       passphrases, this option specifies the total number of words used, and
-#       defaults to 3.
+#       characters used, and defaults to 20 for passwords and 4 for PINs. When
+#       used along with options `-s`, `-n`, `-u`, or `-l`, an error is emitted
+#       if they would prevent the specified length from being met (i.e. `-s
+#       20` would exceed a LENGTH of 10). For passphrases, this option
+#       specifies the total number of words used, and defaults to 3.
 #
 #   -p, --passphrase
 #       Generates a passphrase using dictionary words instead of a password of
@@ -36,22 +38,25 @@
 #   -P, --pin
 #       Generates a numeric PIN.
 #
-#   -n, --numbers
-#       For passwords, this option will force the password to include at least
-#       one numeric digit. For passphrases and PINs, this option has no
-#       effect.
+#   -n [COUNT], --numbers [COUNT]
+#       For passwords, this option specifies the number of numbers to include
+#       in the generated password. If no COUNT is specified, at least one
+#       number is guaranteed to be included. For passphrases and PINs, this
+#       option has no effect.
 #
 #   -N, --no-numbers
-#       For passwords, this option will force the password to include no
-#       numbers at all. For passphrases and PINs, this options has no effect.
+#       For passwords, this option forces the password to include no numbers
+#       at all. For passphrases and PINs, this options has no effect.
 #
-#   -s, --symbols
-#       For passwords, this option will force the password to include at least
-#       one symbol. For passphrases and PINs, this option has no effect.
+#   -s [COUNT], --symbols [COUNT]
+#       For passwords, this option specifies the number of symbols to include
+#       in the generated password. If no COUNT is specified, at least one
+#       symbol is guaranteed to be included. For passphrases and PINs, this
+#       option has no effect.
 #
 #   -S, --no-symbols
-#       For passwords, this option will force the password to include no
-#       symbols at all. For passphrases and PINs, this option has no effect.
+#       For passwords, this option forces the password to include no symbols
+#       at all. For passphrases and PINs, this option has no effect.
 #
 #   -d CHAR, --delimiter CHAR
 #       For passphrases, this option is the character that is used between
@@ -64,10 +69,39 @@
 #       temporary wordlist will be downloaded from GitHub (see WORD LISTS
 #       below). For passwords and PINs, this option has no effect.
 #
-#   -U, --upcase
-#       For passphrases, this option will cause words in the passphrase to be
-#       randomly UPCASED, and defaults to off. For passwords and PINs, this
-#       option has no effect.
+#   -u [COUNT], --upcase [COUNT]
+#       For passwords, this option specifies the number of uppercase letters
+#       to include in the generated password. If no COUNT is specified, at
+#       least one uppercase letter is guaranteed to be included. By default,
+#       passwords include at least one uppercase character. For passphrases,
+#       this option specifies the number of uppercase words to include in the
+#       generated passphrase. If no COUNT is specified, at least one uppercase
+#       word is guaranteed to be included. By default, passphrases do not
+#       include an uppercase word. For passwords and PINs, this option has no
+#       effect.
+#
+#   -U, --no-upcase
+#       For passwords, this option forces the password to have no uppercase
+#       characters at all. For passphrases, this option forces the passphrase
+#       to include no uppercase words at all. For PINs, this option has no
+#       effect.
+#
+#   -l [COUNT], --lower [COUNT]
+#       For passwords, this option specifies the number of lowercase
+#       characters to include in the generated password. If no COUNT is
+#       supplied, at least one lowercase character is guaranteed to be
+#       provided. By default passwords include at least one lowercase
+#       character. For passphrases, this option specifies the number of
+#       lowercase words to include in the generated passphrase. If no COUNT is
+#       specified, at least one lowercase word is guaranteed to be included.
+#       By default, passphrases do not include an uppercase word. For PINs,
+#       this option has no effect.
+#
+#   -L, --no-lower
+#       For passwords, this option forces the password to have no lowercase
+#       characters at all. For passphrases, this option forces the passphrase
+#       to include no lowercase words at all. For PINs, this option has no
+#       effect.
 #
 #   -m LENGTH, --min-word-length LENGTH
 #       For passphrases, this option will choose words in the passphrase at
@@ -211,8 +245,8 @@ generate_passphrase() {
       sed -n "$lines"
     fi
   } | while read -r word; do
-      if [[ "$upcase" ]]; then
-        upcase=""
+      if [[ "${upcase//y/1}" -gt 0 ]]; then
+        upcase="$((${upcase//y/1} - 1))"
         tr '[:lower:]' '[:upper:]' <<< "$word"
       else
         tr '[:upper:]' '[:lower:]' <<< "$word"
@@ -258,46 +292,91 @@ get_char() {
 # Generates a password
 #
 # $1 - total password length
-# $2 - use numbers?
-# $3 - use symbols?
+# $2 - number of digits to use
+# $3 - number of symbols to use
+# $4 - number of uppercase letters to use
+#
+# shellcheck disable=SC2004
 generate_password() {
-  local length="$1" digits="$2" symbols="$3" i=0
+  local length="$1" digits="$2" symbols="$3" uppercase="$4" lowercase="$5" \
+    min_needed=0 i
 
   if ! [[ "$length" =~ ^[0-9]+$ ]]; then
     warn "Length must be a number!"
     return 1
-  fi
-
-  if [[ "$length" -lt 8 ]]; then
+  elif [[ "$length" -lt 8 ]]; then
     warn "Length must be at least 8 characters!"
+    return 1
+  elif [[ "$digits" != y ]] && ! [[ "$digits" =~ ^[0-9]+$ ]]; then
+    warn "Digit count must be a number!"
+    return 1
+  elif [[ "$symbols" != y ]] && ! [[ "$symbols" =~ ^[0-9]+$ ]]; then
+    warn "Symbol count must be a number!"
+    return 1
+  elif [[ "$uppercase" != y ]] && ! [[ "$uppercase" =~ ^[0-9]+$ ]]; then
+    warn "Uppercase letter count must be a number!"
+    return 1
+  elif [[ "$lowercase" != y ]] && ! [[ "$lowercase" =~ ^[0-9]+$ ]]; then
+    warn "Lowercase letter count must be a number!"
     return 1
   fi
 
   {
-    if [[ "$digits" ]]; then
+    min_needed=$((
+      ${digits//y/1} +
+      ${symbols//y/1} +
+      ${uppercase//y/1} +
+      ${lowercase//y/1}
+    ))
+
+    if [[ "$*" =~ y ]]; then
+      (( min_needed <= length ))
+    else
+      (( min_needed == length ))
+    fi
+  } || {
+    warn "Length of $length is not valid!"
+    warn
+    warn "Asked for:"
+    warn
+    warn "  - Numbers: ${digits//y/(at least 1)}"
+    warn "  - Symbols: ${symbols//y/(at least 1)}"
+    warn "  - Uppercase Letters: ${uppercase//y/(at least 1)}"
+    warn "  - Lowercase Letters: ${lowercase//y/(at least 1)}"
+    warn
+    warn "This would result in a ${min_needed} character password."
+    return 1
+  }
+
+  {
+    for (( i=0; i < ${digits//y/1}; i++ )); do
       get_char "[:digit:]"
-      i=$(( i + 1 ))
-    fi
-
-    if [[ "$symbols" ]]; then
-      get_char "[:punct:]"
-      i=$(( i + 1 ))
-    fi
-
-    get_char "[:lower:]"
-    i=$(( i + 1 ))
-
-    get_char "[:upper:]"
-    i=$(( i + 1 ))
-
-    for (( i; i < length; i++ )); do
-      # Avoid too many symbols
-      if (( i < length/2 )); then
-        get_char "[:alpha:]${digits:+[:digit:]}${symbols:+[:punct:]}"
-      else
-        get_char "[:alpha:]${digits:+[:digit:]}"
-      fi
+      length=$(( length - 1 ))
     done
+
+    for (( i=0; i < ${symbols//y/1}; i++ )); do
+      get_char "[:punct:]"
+      length=$(( length - 1 ))
+    done
+
+    for (( i=0; i < ${uppercase//y/1}; i++ )); do
+      get_char "[:upper:]"
+      length=$(( length - 1 ))
+    done
+
+    for (( i=0; i < ${lowercase//y/1}; i++ )); do
+      get_char "[:lower:]"
+      length=$(( length - 1 ))
+    done
+
+    if (( length > 0 )); then
+      get_char "$(
+        [[ "$digits" = y ]] && printf "[:digit:]"
+        [[ "$symbols" = y ]] && printf "[:punct:]"
+        [[ "$uppercase" = y ]] && printf "[:upper:]"
+        [[ "$lowercase" = y ]] && printf "[:lower:]"
+      )" "$length"
+    fi
   } | sort -R | awk '{ printf "%s", $1 }'
 }
 
@@ -316,7 +395,7 @@ generate_pin() {
 }
 
 main() {
-  local length numbers=1 symbols=1 dictionary_file upcase delimiter \
+  local length numbers=y symbols=y dictionary_file upcase lower=y delimiter \
     min_word_length max_word_length style=password count=1 i
 
   while [[ "$#" -gt 0 ]]; do
@@ -354,19 +433,53 @@ main() {
         shift
         ;;
       -n|--numbers)
-        numbers=1
+        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
+          numbers="$2"
+          shift 2
+        else
+          numbers=y
+          shift
+        fi
+        ;;
+      --numbers=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        numbers="${1#*=}"
+        shift
+        ;;
+      -n*)
+        numbers="${1:2}"
         shift
         ;;
       -N|--no-numbers)
-        numbers=
+        numbers=0
         shift
         ;;
       -s|--symbols)
-        symbols=1
+        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
+          symbols="$2"
+          shift 2
+        else
+          symbols=y
+          shift
+        fi
+        ;;
+      --symbols=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        symbols="${1#*=}"
+        shift
+        ;;
+      -s*)
+        symbols="${1:2}"
         shift
         ;;
       -S|--no-symbols)
-        symbols=
+        symbols=0
         shift
         ;;
       -F|--dictionary-file)
@@ -389,8 +502,54 @@ main() {
         dictionary_file="${1#*=}"
         shift
         ;;
-      -U|--upcase)
-        upcase=1
+      -u|--upcase)
+        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
+          upcase="$2"
+          shift 2
+        else
+          upcase=y
+          shift
+        fi
+        ;;
+      -u*)
+        upcase="${1:2}"
+        shift
+        ;;
+      --upcase=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        upcase="${1#*=}"
+        shift
+        ;;
+      -U|--no-upcase)
+        upcase=0
+        shift
+        ;;
+      -l|--lower)
+        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
+          lower="$2"
+          shift 2
+        else
+          lower=y
+          shift
+        fi
+        ;;
+      --lower=*)
+        if [[ -z "${1#*=}" ]]; then
+          warn "Must specify value for '$1'"
+          return 1
+        fi
+        lower="${1#*=}"
+        shift
+        ;;
+      -l*)
+        lower="${1:2}"
+        shift
+        ;;
+      -L|--no-lower)
+        lower=0
         shift
         ;;
       -d|--delimiter)
@@ -513,7 +672,9 @@ main() {
       generate_password \
         "${length:-$DEFAULT_PASSWORD_LENGTH}" \
         "${numbers:-}" \
-        "${symbols:-}"
+        "${symbols:-}" \
+        "${upcase:-y}" \
+        "${lower:-}"
     elif [[ "$style" = passphrase ]]; then
       generate_passphrase \
         "${length:-$DEFAULT_PASSPHRASE_WORD_COUNT}" \

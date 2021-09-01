@@ -31,9 +31,11 @@ long\.
 .TP
 \fI\-LENGTH\fP, \fI\-\-length LENGTH\fP
 For passwords and PINs, this option specifies the total number of
-characters used, and defaults to 20 for passwords and 4 for PINs\. For
-passphrases, this option specifies the total number of words used, and
-defaults to 3\.
+characters used, and defaults to 20 for passwords and 4 for PINs\. When
+used along with options \fB-s\fR, \fB-n\fR, \fB-u\fR, or \fB-l\fR, an error is emitted if
+they would prevent the specified length from being met (i\.e\. \fB-s 20\fR would
+exceed a LENGTH of 10)\.  For passphrases, this option specifies the total
+number of words used, and defaults to 3\.
 .LP
 .TP
 \fI\-p\fP, \fI\-\-passphrase\fP
@@ -45,25 +47,28 @@ random characters\.
 Generates a numeric PIN\.
 .LP
 .TP
-\fI\-n\fP, \fI\-\-numbers\fP
-For passwords, this option will force the password to include at least
-one numeric digit\. For passphrases and PINs, this option has no
+\fI\-n \[lB]COUNT\[rB]\fP, \fI\-\-numbers \[lB]COUNT\[rB]\fP
+For passwords, this option specifies the number of numbers to include in
+the generated password\. If no COUNT is specified, at least one number is
+guaranteed to be included\. For passphrases and PINs, this option has no
 effect\.
 .LP
 .TP
 \fI\-N\fP, \fI\-\-no\-numbers\fP
-For passwords, this option will force the password to include no
-numbers at all\. For passphrases and PINs, this options has no effect\.
+For passwords, this option forces the password to include no numbers at
+all\. For passphrases and PINs, this options has no effect\.
 .LP
 .TP
-\fI\-s\fP, \fI\-\-symbols\fP
-For passwords, this option will force the password to include at least
-one symbol\. For passphrases and PINs, this option has no effect\.
+\fI\-s \[lB]COUNT\[rB]\fP, \fI\-\-symbols \[lB]COUNT\[rB]\fP
+For passwords, this option specifies the number of symbols to include in
+the generated password\. If no COUNT is specified, at least one symbol is
+guaranteed to be included\. For passphrases and PINs, this option has no
+effect\.
 .LP
 .TP
 \fI\-S\fP, \fI\-\-no\-symbols\fP
-For passwords, this option will force the password to include no
-symbols at all\. For passphrases and PINs, this option has no effect\.
+For passwords, this option forces the password to include no symbols at
+all\. For passphrases and PINs, this option has no effect\.
 .LP
 .TP
 \fI\-d CHAR\fP, \fI\-\-delimiter CHAR\fP
@@ -79,10 +84,38 @@ temporary wordlist will be downloaded from GitHub (see WORD LISTS
 below)\. For passwords and PINs, this option has no effect\.
 .LP
 .TP
-\fI\-U\fP, \fI\-\-upcase\fP
-For passphrases, this option will cause words in the passphrase to be
-randomly UPCASED, and defaults to off\. For passwords and PINs, this
-option has no effect\.
+\fI\-u \[lB]COUNT\[rB]\fP, \fI\-\-upcase \[lB]COUNT\[rB]\fP
+For passwords, this option specifies the number of uppercase letters to
+include in the generated password\. If no COUNT is specified, at least one
+uppercase letter is guaranteed to be included\. By default, passwords
+include at least one uppercase character\. For passphrases, this option
+specifies the number of uppercase words to include in the generated
+passphrase\. If no COUNT is specified, at least one uppercase word is
+guaranteed to be included\. By default, passphrases do not include an
+uppercase word\. For passwords and PINs, this option has no effect\.
+.LP
+.TP
+\fI\-U\fP, \fI\-\-no\-upcase\fP
+For passwords, this option forces the password to have no uppercase
+characters at all\. For passphrases, this option forces the passphrase to
+include no uppercase words at all\. For PINs, this option has no effect\.
+.LP
+.TP
+\fI\-l \[lB]COUNT\[rB]\fP, \fI\-\-lower \[lB]COUNT\[rB]\fP
+For passwords, this option specifies the number of lowercase characters to
+include in the generated password\. If no COUNT is supplied, at least one
+lowercase character is guaranteed to be provided\. By default passwords
+include at least one lowercase character\. For passphrases, this option
+specifies the number of lowercase words to include in the generated
+passphrase\. If no COUNT is specified, at least one lowercase word is
+guaranteed to be included\. By default, passphrases do not include an
+uppercase word\. For PINs, this option has no effect\.
+.LP
+.TP
+\fI\-L\fP, \fI\-\-no\-lower\fP
+For passwords, this option forces the password to have no lowercase
+characters at all\. For passphrases, this option forces the passphrase to
+include no lowercase words at all\. For PINs, this option has no effect\.
 .LP
 .TP
 \fI\-m LENGTH\fP, \fI\-\-min\-word\-length LENGTH\fP

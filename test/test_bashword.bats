@@ -23,22 +23,48 @@ load test_helper
   _assert_results
 }
 
-@test "bashword --symbols: generates a password with at least one symbol" {
+@test "bashword --length LENGTH: errors if options prevent given LENGTH" {
+  run bashword -30 -s1 -n1 -u1 -l1
+  assert_failure
+
+  run bashword -30 -S -N -U -L
+  assert_failure
+
+  run bashword -30 -s10 -n10 -u10 -l
+  assert_failure
+
+  run bashword -10 -s1 -u8 -l1 -n
+  assert_failure
+}
+
+@test "bashword --symbols: generates a password with symbols" {
   _assert_results() {
-    assert_output --regexp "[[:punct:]]"
+    assert_characters "[[:punct:]]" "$1"
     assert_success
   }
 
   run bashword --symbols
   _assert_results
 
+  run bashword --symbols 5
+  _assert_results 5
+
+  run bashword --symbols=6
+  _assert_results 6
+
   run bashword -s
   _assert_results
+
+  run bashword -s3
+  _assert_results 3
+
+  run bashword -s 4
+  _assert_results 4
 }
 
 @test "bashword --numbers: generates a password with at least one number" {
   _assert_results() {
-    assert_output --regexp "[[:digit:]]"
+    assert_characters "[[:digit:]]" "$1"
     assert_success
   }
 
@@ -46,6 +72,69 @@ load test_helper
   _assert_results
 
   run bashword -n
+  _assert_results
+
+  run bashword -n3
+  _assert_results 3
+
+  run bashword -n 4
+  _assert_results 4
+
+  run bashword --numbers 5
+  _assert_results 5
+
+  run bashword --numbers=6
+  _assert_results 6
+}
+
+@test "bashword --lower: generates a password with at least one lowercase character" {
+  _assert_results() {
+    assert_characters "[[:lower:]]" "$1"
+    assert_success
+  }
+
+  run bashword --lower
+  _assert_results
+
+  run bashword -l
+  _assert_results
+
+  run bashword -l3
+  _assert_results 3
+
+  run bashword -l 4
+  _assert_results 4
+
+  run bashword --lower 5
+  _assert_results 5
+
+  run bashword --lower=6
+  _assert_results 6
+}
+
+@test "bashword --upcase: generates a password with at least one uppercase character" {
+  _assert_results() {
+    assert_characters "[[:upper:]]" "$1"
+    assert_success
+  }
+
+  run bashword --upcase
+  _assert_results
+
+  run bashword -u
+  _assert_results
+
+  run bashword -u3
+  _assert_results 3
+
+  run bashword -u 4
+  _assert_results 4
+
+  run bashword --upcase 5
+  _assert_results 5
+
+  run bashword --upcase=6
+  _assert_results 6
 }
 
 @test "bashword --no-symbols: generates a password with no symbols" {
@@ -59,6 +148,12 @@ load test_helper
 
   run bashword -S
   _assert_results
+
+  run bashword -s0
+  _assert_results
+
+  run bashword --symbols=0
+  _assert_results
 }
 
 @test "bashword --no-numbers: generates a password with no numbers" {
@@ -71,6 +166,51 @@ load test_helper
   _assert_results
 
   run bashword -N
+  _assert_results
+
+  run bashword -n0
+  _assert_results
+
+  run bashword --numbers=0
+  _assert_results
+}
+
+
+@test "bashword --no-upcase: generates a password with no uppercase characters" {
+  _assert_results() {
+    assert_output --regexp "^[^[:upper:]]+$"
+    assert_success
+  }
+
+  run bashword --no-upcase
+  _assert_results
+
+  run bashword -U
+  _assert_results
+
+  run bashword -u0
+  _assert_results
+
+  run bashword --upcase=0
+  _assert_results
+}
+
+@test "bashword --no-lower: generates a password with no lowercase characters" {
+  _assert_results() {
+    assert_output --regexp "^[^[:lower:]]+$"
+    assert_success
+  }
+
+  run bashword --no-lower
+  _assert_results
+
+  run bashword -L
+  _assert_results
+
+  run bashword -l0
+  _assert_results
+
+  run bashword --lower=0
   _assert_results
 }
 
@@ -101,12 +241,11 @@ load test_helper
 
   run bashword -c3
   _assert_results
-
 }
 
 @test "bashword --passphrase: generates a passphrase with 3 5-8 character words by default" {
   _assert_results() {
-    assert_output --regexp "^[[:lower:]]{5,8}-[[:lower:]]{5,8}-[[:lower:]]{5,8}$"
+    assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"
     assert_success
   }
 
@@ -119,7 +258,7 @@ load test_helper
 
 @test "bashword --passphrase --length LENGTH: generates a passphrase with the specified number of words" {
   _assert_results() {
-    assert_output --regexp "^[[:lower:]]{5,8}-[[:lower:]]{5,8}-[[:lower:]]{5,8}-[[:lower:]]{5,8}$"
+    assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"
     assert_success
   }
 
@@ -138,7 +277,7 @@ load test_helper
 
 @test "bashword --passphrase --word-length LENGTH: generates a passphrase with words of the exact length specified" {
   _assert_results() {
-    assert_output --regexp "^[[:lower:]]{6}-[[:lower:]]{6}-[[:lower:]]{6}$"
+    assert_output --regexp "^[[:alpha:]]{6}-[[:alpha:]]{6}-[[:alpha:]]{6}$"
     assert_success
   }
 
@@ -157,7 +296,7 @@ load test_helper
 
 @test "bashword --passphrase --max-word-length LENGTH generates a passphrase with words of the given max lengths" {
   _assert_results() {
-    assert_output --regexp "^[[:lower:]]{1,10}-[[:lower:]]{1,10}-[[:lower:]]{1,10}$"
+    assert_output --regexp "^[[:alpha:]]{1,10}-[[:alpha:]]{1,10}-[[:alpha:]]{1,10}$"
     assert_success
   }
 
@@ -176,7 +315,7 @@ load test_helper
 
 @test "bashword --passphrase --min-word-length LENGTH generates a passphrase with words of the given min lengths" {
   _assert_results() {
-    assert_output --regexp "^[[:lower:]]{5,}-[[:lower:]]{5,}-[[:lower:]]{5,}$"
+    assert_output --regexp "^[[:alpha:]]{5,}-[[:alpha:]]{5,}-[[:alpha:]]{5,}$"
     assert_success
   }
 
@@ -203,7 +342,19 @@ load test_helper
   run bashword --passphrase --upcase
   _assert_results
 
-  run bashword --passphrase -U
+  run bashword --passphrase -u
+  _assert_results
+
+  run bashword --passphrase --upcase=1
+  _assert_results
+
+  run bashword --passphrase -u1
+  _assert_results
+
+  run bashword --passphrase --upcase 1
+  _assert_results
+
+  run bashword --passphrase -u 1
   _assert_results
 }
 
@@ -231,15 +382,15 @@ load test_helper
     assert_equal "${#lines[*]}" 3
 
     echo "${lines[0]}" |
-      grep -E -q "^[[:lower:]]{5,10}-[[:lower:]]{5,10}-[[:lower:]]{5,10}$" ||
+      grep -E -q "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$" ||
       fail "line 0: ${lines[0]} didn't match expression"
 
     echo "${lines[1]}" |
-      grep -E -q "^[[:lower:]]{5,10}-[[:lower:]]{5,10}-[[:lower:]]{5,10}$" ||
+      grep -E -q "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$" ||
       fail "line 1: ${lines[1]} didn't match expression"
 
     echo "${lines[2]}" |
-      grep -E -q "^[[:lower:]]{5,10}-[[:lower:]]{5,10}-[[:lower:]]{5,10}$" ||
+      grep -E -q "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$" ||
       fail "line 1: ${lines[2]} didn't match expression"
 
     assert_success
