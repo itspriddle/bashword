@@ -4,6 +4,8 @@ INSTALL_FILES=`find $(DIRS) -type f`
 
 PREFIX?=/usr/local
 
+VERSION?=HEAD
+
 test: test-shellcheck test-bats
 
 test-shellcheck:
@@ -25,4 +27,8 @@ install:
 uninstall:
 	for file in $(INSTALL_FILES); do rm -f $(DESTDIR)$(PREFIX)/$$file; done
 
-.PHONY: bats-setup test test-shellcheck test-bats install uninstall
+archive:
+	mkdir -p pkg
+	git archive --prefix=bashword/ --output=pkg/bashword-$(VERSION).zip $(VERSION) $(INSTALL_FILES)
+
+.PHONY: bats-setup test test-shellcheck test-bats install uninstall archive
