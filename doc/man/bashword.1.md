@@ -60,7 +60,7 @@ long.
     For passphrases, this option is the character that is used between
     words. For passwords and PINs, this option has no effect.
 
-*-F PATh*, *--dictionary-file PATH*  
+*-F PATH*, *--dictionary-file PATH*  
     For passphrases, this option specifies the path to a dictionary file
     used to select words for the passphrase, and defaults to
     `/usr/share/dict/words`. If the default file cannot be found, a
