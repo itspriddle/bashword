@@ -23,9 +23,11 @@ long.
 
 *-LENGTH*, *--length LENGTH*  
     For passwords and PINs, this option specifies the total number of
-    characters used, and defaults to 20 for passwords and 4 for PINs. For
-    passphrases, this option specifies the total number of words used, and
-    defaults to 3.
+    characters used, and defaults to 20 for passwords and 4 for PINs. When
+    used along with options `-s`, `-n`, `-u`, or `-l`, an error is emitted if
+    they would prevent the specified length from being met (i.e. `-s 20` would
+    exceed a LENGTH of 10).  For passphrases, this option specifies the total
+    number of words used, and defaults to 3.
 
 *-p*, *--passphrase*  
     Generates a passphrase using dictionary words instead of a password of
@@ -34,22 +36,25 @@ long.
 *-P*, *--pin*  
     Generates a numeric PIN.
 
-*-n*, *--numbers*  
-    For passwords, this option will force the password to include at least
-    one numeric digit. For passphrases and PINs, this option has no
+*-n [COUNT]*, *--numbers [COUNT]*  
+    For passwords, this option specifies the number of numbers to include in
+    the generated password. If no COUNT is specified, at least one number is
+    guaranteed to be included. For passphrases and PINs, this option has no
     effect.
 
 *-N*, *--no-numbers*  
-    For passwords, this option will force the password to include no
-    numbers at all. For passphrases and PINs, this options has no effect.
+    For passwords, this option forces the password to include no numbers at
+    all. For passphrases and PINs, this options has no effect.
 
-*-s*, *--symbols*  
-    For passwords, this option will force the password to include at least
-    one symbol. For passphrases and PINs, this option has no effect.
+*-s [COUNT]*, *--symbols [COUNT]*  
+    For passwords, this option specifies the number of symbols to include in
+    the generated password. If no COUNT is specified, at least one symbol is
+    guaranteed to be included. For passphrases and PINs, this option has no
+    effect.
 
 *-S*, *--no-symbols*  
-    For passwords, this option will force the password to include no
-    symbols at all. For passphrases and PINs, this option has no effect.
+    For passwords, this option forces the password to include no symbols at
+    all. For passphrases and PINs, this option has no effect.
 
 *-d CHAR*, *--delimiter CHAR*  
     For passphrases, this option is the character that is used between
@@ -62,10 +67,35 @@ long.
     temporary wordlist will be downloaded from GitHub (see WORD LISTS
     below). For passwords and PINs, this option has no effect.
 
-*-U*, *--upcase*  
-    For passphrases, this option will cause words in the passphrase to be
-    randomly UPCASED, and defaults to off. For passwords and PINs, this
-    option has no effect.
+*-u [COUNT]*, *--upcase [COUNT]*  
+    For passwords, this option specifies the number of uppercase letters to
+    include in the generated password. If no COUNT is specified, at least one
+    uppercase letter is guaranteed to be included. By default, passwords
+    include at least one uppercase character. For passphrases, this option
+    specifies the number of uppercase words to include in the generated
+    passphrase. If no COUNT is specified, at least one uppercase word is
+    guaranteed to be included. By default, passphrases do not include an
+    uppercase word. For passwords and PINs, this option has no effect.
+
+*-U*, *--no-upcase*  
+    For passwords, this option forces the password to have no uppercase
+    characters at all. For passphrases, this option forces the passphrase to
+    include no uppercase words at all. For PINs, this option has no effect.
+
+*-l [COUNT]*, *--lower [COUNT]*  
+    For passwords, this option specifies the number of lowercase characters to
+    include in the generated password. If no COUNT is supplied, at least one
+    lowercase character is guaranteed to be provided. By default passwords
+    include at least one lowercase character. For passphrases, this option
+    specifies the number of lowercase words to include in the generated
+    passphrase. If no COUNT is specified, at least one lowercase word is
+    guaranteed to be included. By default, passphrases do not include an
+    uppercase word. For PINs, this option has no effect.
+
+*-L*, *--no-lower*  
+    For passwords, this option forces the password to have no lowercase
+    characters at all. For passphrases, this option forces the passphrase to
+    include no lowercase words at all. For PINs, this option has no effect.
 
 *-m LENGTH*, *--min-word-length LENGTH*  
     For passphrases, this option will choose words in the passphrase at

@@ -10,3 +10,15 @@ setup() {
   # make executables in bin/ and test/bin visible to PATH
   PATH="$DIR/../bin:$DIR/../test/bin:$PATH"
 }
+
+# shellcheck disable=SC2154
+assert_characters() {
+  local charset="$1" count="$2"
+
+  assert_output --regexp "$charset"
+
+  if [[ "$count" ]]; then
+    assert_equal "$count" \
+      "$(grep -E -o "$charset" <<< "$output" | awk 'END { print NR }')"
+  fi
+}
