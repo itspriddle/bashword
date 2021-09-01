@@ -151,6 +151,43 @@
 #   Generate 4 PIN numbers with 5 digits
 #     $ bashword -P -5 -c 4
 #
+# CONFIGURATION
+#   bashword defaults can be configured by setting the following environmen
+#   variables (typically in `~/.profile` or `~/.bash_profile` for Bash users,
+#   or `~/.zshenv` for ZSH users). Configuring bashword is completely
+#   optional.
+#
+#   $BASHWORD_DEFAULT_PASSWORD_LENGTH
+#     The default password length.
+#
+#   $BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST
+#     The default word list file to use for generating passphrase words.
+#
+#   $BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH
+#     The default minimum word length for words selected for passphrases.
+#
+#   $BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH
+#     The default maximum word length for words selected for passphrases.
+#
+#   $BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT
+#     The default number of words chosen for passphrases
+#
+#   $BASHWORD_DEFAULT_PASSPHRASE_DELIMITER
+#     The default character used between passphrase words.
+#
+#   $BASHWORD_DEFAULT_PIN_LENGTH
+#     The default length for PINs.
+#
+#   Full example:
+#
+#       export BASHWORD_DEFAULT_PASSWORD_LENGTH=30
+#       export BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="$HOME/.words"
+#       export BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH=4
+#       export BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH=4
+#       export BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT=5
+#       export BASHWORD_DEFAULT_PASSPHRASE_DELIMITER=":"
+#       export BASHWORD_DEFAULT_PIN_LENGTH=6
+#
 # WORD LISTS
 #   By default passphrases are generated using `/usr/share/dict/words`. If
 #   that file does not exist, one will be downloaded automatically from GitHub
@@ -170,28 +207,28 @@ set -euo pipefail
 BASHWORD_VERSION="0.0.1"
 
 # Default word list
-DEFAULT_WORD_LIST=/usr/share/dict/words
+DEFAULT_PASSPHRASE_WORD_LIST="${BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST:-/usr/share/dict/words}"
 
 # Online word list from macOS Big Sur
 GITHUB_WORD_LIST="https://gist.github.com/itspriddle/3527c7018aeb32f456c3cfa3f6b5c22f/raw/0714192788a8f0336648adae9c4c8be2d5e8d2d3/words.gz"
 
 # Default password length
-DEFAULT_PASSWORD_LENGTH=20
+DEFAULT_PASSWORD_LENGTH="${BASHWORD_DEFAULT_PASSWORD_LENGTH:-20}"
 
 # Default min word length for passphrase words
-DEFAULT_PASSPHRASE_MIN_WORD_LENGTH=5
+DEFAULT_PASSPHRASE_MIN_WORD_LENGTH="${BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH:-5}"
 
 # Default max word length for passphrase words
-DEFAULT_PASSPHRASE_MAX_WORD_LENGTH=8
+DEFAULT_PASSPHRASE_MAX_WORD_LENGTH="${BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH:-8}"
 
 # Default number of words in passphrases
-DEFAULT_PASSPHRASE_WORD_COUNT=3
+DEFAULT_PASSPHRASE_WORD_COUNT="${BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT:-3}"
 
 # Default delimiter to join words in passphrases
-DEFAULT_PASSPHRASE_DELIMITER="-"
+DEFAULT_PASSPHRASE_DELIMITER="${BASHWORD_DEFAULT_PASSPHRASE_DELIMITER:--}"
 
 # Default PIN length
-DEFAULT_PIN_LENGTH=4
+DEFAULT_PIN_LENGTH="${BASHWORD_DEFAULT_PIN_LENGTH:-4}"
 
 # Prints the given message to STDERR
 #
@@ -251,7 +288,7 @@ generate_passphrase() {
     fi
   } | while read -r word; do
       if [[ "${upcase//y/1}" -gt 0 ]]; then
-        upcase="$((${upcase//y/1} - 1))"
+        upcase="$(( ${upcase//y/1} - 1 ))"
         tr '[:lower:]' '[:upper:]' <<< "$word"
       else
         tr '[:upper:]' '[:lower:]' <<< "$word"
@@ -268,7 +305,7 @@ get_word_list() {
 
   if [[ -r "$file" ]]; then
     echo "$file"
-  elif [[ "$file" == "$DEFAULT_WORD_LIST" ]]; then
+  elif [[ "$file" == "$DEFAULT_PASSPHRASE_WORD_LIST" ]]; then
     if [[ ! -r "$tmp_words" ]]; then
       curl -s -L "$GITHUB_WORD_LIST" | gunzip > "$tmp_words"
     fi
@@ -683,7 +720,7 @@ main() {
     elif [[ "$style" = passphrase ]]; then
       generate_passphrase \
         "${length:-$DEFAULT_PASSPHRASE_WORD_COUNT}" \
-        "${dictionary_file:-$DEFAULT_WORD_LIST}" \
+        "${dictionary_file:-$DEFAULT_PASSPHRASE_WORD_LIST}" \
         "${upcase:-}" \
         "${min_word_length:-$DEFAULT_PASSPHRASE_MIN_WORD_LENGTH}" \
         "${max_word_length:-$DEFAULT_PASSPHRASE_MAX_WORD_LENGTH}" \

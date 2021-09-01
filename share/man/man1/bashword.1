@@ -193,6 +193,48 @@ Generate passwords for the given users
 \[Do] \[lC] echo user1; echo user2; echo user3 \[rC] \[or] paste \- <(bashword \-c 3)
 .fi
 .LP
+.SH CONFIGURATION
+.LP
+.PP
+bashword defaults can be configured by setting the following environment
+variables (typically in \fB~/.profile\fR or \fB~/.bash_profile\fR for Bash users, or
+\fB~/.zshenv\fR for ZSH users)\. Configuring bashword is completely optional\.
+.LP
+.RS
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PASSWORD_LENGTH\fR: The default password length\.
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST\fR: The default word list file to use
+for generating passphrase words\.
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH\fR: The default minimum word
+length for words selected for passphrases\.
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH\fR: The default maximum word
+length for words selected for passphrases\.
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT\fR: The default number of words
+chosen for passphrases\.
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PASSPHRASE_DELIMITER\fR: The default character used between
+passphrase words\.
+.IP \(bu 2
+\fB$BASHWORD_DEFAULT_PIN_LENGTH\fR: The default length for PINs\.
+.RE
+.LP
+.PP
+Full example:
+.LP
+.nf
+export BASHWORD\[ru]DEFAULT\[ru]PASSWORD\[ru]LENGTH\[eq]30
+export BASHWORD\[ru]DEFAULT\[ru]PASSPHRASE\[ru]WORD\[ru]LIST\[eq]\[dq]\[Do]HOME\[sl]\.words\[dq]
+export BASHWORD\[ru]DEFAULT\[ru]PASSPHRASE\[ru]MIN\[ru]WORD\[ru]LENGTH\[eq]4
+export BASHWORD\[ru]DEFAULT\[ru]PASSPHRASE\[ru]MAX\[ru]WORD\[ru]LENGTH\[eq]4
+export BASHWORD\[ru]DEFAULT\[ru]PASSPHRASE\[ru]WORD\[ru]COUNT\[eq]5
+export BASHWORD\[ru]DEFAULT\[ru]PASSPHRASE\[ru]DELIMITER\[eq]\[dq]:\[dq]
+export BASHWORD\[ru]DEFAULT\[ru]PIN\[ru]LENGTH\[eq]6
+.fi
+.LP
 .SH WORD LISTS
 .LP
 .PP
