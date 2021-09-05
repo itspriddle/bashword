@@ -4,6 +4,12 @@
 
 `bashword` [OPTIONS]
 
+`bashword` [-LENGTH] [-n [COUNT]\|-N] [-s [COUNT]\|-S] [-u [COUNT]\|-U\] [-l [COUNT]\|-L] [-c COUNT]
+
+`bashword` [-p] [-LENGTH] [-F FILE] [-d CHAR] [-u [COUNT]] [-m LENGTH] [-M LENGTH] [-w LENGTH] [-c COUNT]
+
+`bashword` [-P] [-LENGTH] [-c COUNT]
+
 ## DESCRIPTION
 
 Generates passwords, passphrases, or PINs.
