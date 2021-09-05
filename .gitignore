@@ -1,3 +1,4 @@
 test/bats
 test/test_helper/bats-support
 test/test_helper/bats-assert
+pkg
