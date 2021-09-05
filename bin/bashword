@@ -225,14 +225,14 @@ generate_passphrase() {
 
   dict="$(get_word_list "$dict")"
 
-  line_max="$(grep -c -e "^.\{$length_min,${length_max-}\}$" "$dict" || true)"
+  line_max="$(tr -d $'\r' < "$dict" | grep -c -e "^.\{$length_min,${length_max-}\}$" || true)"
 
   if [[ "$words" -gt "$line_max" ]]; then
     warn "not enough words"
     return 1
   fi
 
-  grep -e "^.\{$length_min,${length_max-}\}$" "$dict" | {
+  tr -d $'\r' < "$dict" | grep -e "^.\{$length_min,${length_max-}\}$" | {
     if type shuf &> /dev/null; then
       shuf "-n$words"
     else
