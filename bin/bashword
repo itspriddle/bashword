@@ -263,14 +263,27 @@ generate_passphrase() {
   elif [[ "$length_min" -gt "$length_max" ]]; then
     warn "Min length must be greater than or equal to max length!"
     return 1
+  elif [[ "${#delimiter}" -gt 1 ]]; then
+    warn "Delimiter must be 1 character!"
+    return 1
   fi
 
   dict="$(get_word_list "$dict")"
 
-  line_max="$(tr -d $'\r' < "$dict" | grep -c -e "^.\{$length_min,${length_max-}\}$" || true)"
+  line_max="$(tr -d $'\r' < "$dict" | grep -c -e "^.\{$length_min,$length_max\}$" || true)"
 
   if [[ "$words" -gt "$line_max" ]]; then
-    warn "not enough words"
+    warn "There were not enough words found in the specified dictionary file"
+    warn "to generate a $words-word passphrase with words between"
+    warn "$length_min and $length_max characters in length."
+    warn
+    warn "You can check the words returned by running the following:"
+    warn
+    warn "  tr -d \$'\\r' < \"$dict\" | grep -e \"^.\{$length_min,$length_max\}$\""
+    warn
+    warn "You may want to try another word list and use the"
+    warn "'--dictionary-file' option, or try specifying different word lengths"
+    warn "with the '--min-word-length' or '--max-word-length' options."
     return 1
   fi
 
