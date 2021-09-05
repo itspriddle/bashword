@@ -409,6 +409,28 @@ load test_helper
   _assert_results
 }
 
+@test "bashword --passphrase --dictionary-file FILE works with a custom word list" {
+  _assert_results() {
+    assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"
+    assert_success
+  }
+
+  run bashword --passphrase --dictionary-file test/fixtures/words
+  _assert_results
+
+  run bashword --passphrase --dictionary-file=test/fixtures/words
+  _assert_results
+
+  run bashword --passphrase -Ftest/fixtures/words
+  _assert_results
+
+  run bashword --passphrase -F test/fixtures/words
+  _assert_results
+
+  run bashword --passphrase -F test/fixtures/words-windows
+  _assert_results
+}
+
 @test "bashword --pin: generates a numeric PIN 4 characters long by default" {
   _assert_results() {
     assert_output --regexp "^[0-9]{4}$"

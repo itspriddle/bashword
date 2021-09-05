@@ -232,7 +232,7 @@ generate_passphrase() {
     return 1
   fi
 
-  grep -e "^.\{$length_min,${length_max-}\}$" "$dict" | {
+  tr -d '\r' < "$dict" | grep -e "^.\{$length_min,${length_max-}\}$" | {
     if type shuf &> /dev/null; then
       shuf "-n$words"
     else
