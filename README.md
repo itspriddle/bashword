@@ -197,6 +197,12 @@ To install `bashword`, the bash script needs to be copied to a directory in
 your `$PATH`. If you want `man bashword` to work, the man page needs to be
 copied to a directory in your `$MANPATH`.
 
+### Install globally via Homebrew on macOS
+
+On macOS, `bashword` can be installed via Homebrew with:
+
+    brew install itspriddle/brews/bashword
+
 ### Install globally via make
 
 macOS and most Linux distributions add `/usr/local/bin` to `$PATH` and
