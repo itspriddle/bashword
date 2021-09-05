@@ -527,7 +527,11 @@ main() {
         ;;
       -n|--numbers)
         numbers="$(arg_y_or_count "$@")"
-        [[ "$numbers" = y ]] && shift || shift 2
+        if [[ "$numbers" = y ]]; then
+          shift
+        else
+          shift 2
+        fi
         ;;
       --numbers=*)
         numbers="$(require_param "$1")"
@@ -543,7 +547,11 @@ main() {
         ;;
       -s|--symbols)
         symbols="$(arg_y_or_count "$@")"
-        [[ "$symbols" = y ]] && shift || shift 2
+        if [[ "$symbols" = y ]]; then
+          shift
+        else
+          shift 2
+        fi
         ;;
       --symbols=*)
         symbols="$(require_param "$1")"
@@ -571,7 +579,11 @@ main() {
         ;;
       -u|--upcase)
         upcase="$(arg_y_or_count "$@")"
-        [[ "$upcase" = y ]] && shift || shift 2
+        if [[ "$upcase" = y ]]; then
+          shift
+        else
+          shift 2
+        fi
         ;;
       -u*)
         upcase="${1:2}"
@@ -587,7 +599,11 @@ main() {
         ;;
       -l|--lower)
         lower="$(arg_y_or_count "$@")"
-        [[ "$lower" = y ]] && shift || shift 2
+        if [[ "$lower" = y ]]; then
+          shift
+        else
+          shift 2
+        fi
         ;;
       --lower=*)
         lower="$(require_param "$1")"
