@@ -209,7 +209,7 @@ fi
 set -euo pipefail
 
 # Version of this script
-BASHWORD_VERSION="0.0.1"
+BASHWORD_VERSION="0.1.0"
 
 # Default word list
 DEFAULT_PASSPHRASE_WORD_LIST="${BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST:-/usr/share/dict/words}"
