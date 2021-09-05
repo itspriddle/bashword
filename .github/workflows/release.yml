@@ -1,0 +1,21 @@
+name: Upload zip on new tag
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get version
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF##refs/tags/}
+      - name: Prepare zip archive
+        run: VERSION=${{ steps.version.outputs.VERSION }} make archive
+      - name: Upload archive to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: pkg/bashword-${{ steps.version.outputs.VERSION }}.zip
