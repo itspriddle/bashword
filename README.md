@@ -158,6 +158,35 @@ Generate passwords for the given users
 
     $ { echo user1; echo user2; echo user3 } | paste - <(bashword -c 3)
 
+### Configuration
+
+bashword defaults can be configured by setting the following environment
+variables (typically in `~/.profile` or `~/.bash_profile` for Bash users, or
+`~/.zshenv` for ZSH users). Configuring bashword is completely optional.
+
+- `$BASHWORD_DEFAULT_PASSWORD_LENGTH`: The default password length to use.
+- `$BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST`: The default word list file to use
+  for generating passphrase words.
+- `$BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH`: The default minimum word
+  length for words selected for passphrases.
+- `$BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH`: The default maximum word
+  length for words selected for passphrases.
+- `$BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT`: The default number of words
+  chosen for passphrases.
+- `$BASHWORD_DEFAULT_PASSPHRASE_DELIMITER`: The default character used between
+  passphrase words.
+- `$BASHWORD_DEFAULT_PIN_LENGTH`: The default length for PINs.
+
+Full example:
+
+    export BASHWORD_DEFAULT_PASSWORD_LENGTH=30
+    export BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="$HOME/.words"
+    export BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH=4
+    export BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH=4
+    export BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT=5
+    export BASHWORD_DEFAULT_PASSPHRASE_DELIMITER=":"
+    export BASHWORD_DEFAULT_PIN_LENGTH=6
+
 ## Installation
 
 `bashword` includes the main [`bin/bashword`](./bin/bashword) bash script and

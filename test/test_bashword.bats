@@ -491,3 +491,45 @@ load test_helper
   run bashword --pin -c3
   _assert_results
 }
+
+@test "BASHWORD_DEFAULT_PASSWORD_LENGTH sets a default password length" {
+  BASHWORD_DEFAULT_PASSWORD_LENGTH=30 run bashword
+  assert_equal 30 "${#output}"
+  assert_success
+}
+
+@test "BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST sets a default passphrase word list" {
+  BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="test/fixtures/words" run bashword -p
+  assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"
+  assert_success
+}
+
+@test "BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH sets a default min word length" {
+  BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH=4 run bashword -p
+  assert_output --regexp "^[[:alpha:]]{4,}-[[:alpha:]]{4,}-[[:alpha:]]{4,}$"
+  assert_success
+}
+
+@test "BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH sets a default max word length" {
+  BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH=6 run bashword -p
+  assert_output --regexp "^[[:alpha:]]{5,6}-[[:alpha:]]{5,6}-[[:alpha:]]{5,6}$"
+  assert_success
+}
+
+@test "BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT sets a default word count" {
+  BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT=4 run bashword -p
+  assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"
+  assert_success
+}
+
+@test "BASHWORD_DEFAULT_PASSPHRASE_DELIMITER sets a default word delimiter" {
+  BASHWORD_DEFAULT_PASSPHRASE_DELIMITER=: run bashword -p
+  assert_output --regexp "^[[:alpha:]]{5,8}:[[:alpha:]]{5,8}:[[:alpha:]]{5,8}$"
+  assert_success
+}
+
+@test "BASHWORD_DEFAULT_PIN_LENGTH sets a default word delimiter" {
+  BASHWORD_DEFAULT_PIN_LENGTH=5 run bashword -P
+  assert_equal 5 "${#output}"
+  assert_success
+}
