@@ -566,7 +566,7 @@ main() {
         shift
         ;;
       -F|--dictionary-file)
-        dictionary_file="$(require_param "$1" "$2")"
+        dictionary_file="$(require_param "$1" "${2-}")"
         shift 2
         ;;
       -F*)
@@ -618,7 +618,7 @@ main() {
         shift
         ;;
       -d|--delimiter)
-        delimiter="$(require_param "$1" "$2")"
+        delimiter="$(require_param "$1" "${2-}")"
         shift 2
         ;;
       -d*)
@@ -630,7 +630,7 @@ main() {
         shift
         ;;
       -m|--min-word-length)
-        min_word_length="$(require_param "$1" "$2")"
+        min_word_length="$(require_param "$1" "${2-}")"
         shift 2
         ;;
       -m*)
@@ -642,7 +642,7 @@ main() {
         shift
         ;;
       -M|--max-word-length)
-        max_word_length="$(require_param "$1" "$2")"
+        max_word_length="$(require_param "$1" "${2-}")"
         shift 2
         ;;
       -M*)
@@ -654,7 +654,7 @@ main() {
         shift
         ;;
       -w|--word-length)
-        min_word_length="$(require_param "$1" "$2")"
+        min_word_length="$(require_param "$1" "${2-}")"
         max_word_length="$min_word_length"
         shift 2
         ;;
@@ -669,7 +669,7 @@ main() {
         shift
         ;;
       -c|--count)
-        count="$(require_param "$1" "$2")"
+        count="$(require_param "$1" "${2-}")"
         shift 2
         ;;
       -c*)
