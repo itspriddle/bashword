@@ -225,7 +225,7 @@ generate_passphrase() {
 
   dict="$(get_word_list "$dict")"
 
-  line_max="$(grep -c -e "^.\{$length_min,${length_max-}\}$" "$dict")"
+  line_max="$(grep -c -e "^.\{$length_min,${length_max-}\}$" "$dict" || true)"
 
   if [[ "$words" -gt "$line_max" ]]; then
     warn "not enough words"
@@ -236,10 +236,16 @@ generate_passphrase() {
     if type shuf &> /dev/null; then
       shuf "-n$words"
     else
-      local lines="" i
+      local lines="" number i
 
       for (( i=0; i < words; i++ )); do
-        lines="${lines}$(( ((RANDOM << 15 | RANDOM) << 15 | RANDOM ) % (line_max + 1) ))p;"
+        number="$(( ((RANDOM << 15 | RANDOM) << 15 | RANDOM ) % (line_max + 1) ))"
+
+        if [[ "$number" -eq 0 ]] || [[ ";$lines" = *";${number}p;"* ]]; then
+          i=$(( i-- ))
+        else
+          lines="${lines}${number}p;"
+        fi
       done
 
       sed -n "$lines"
