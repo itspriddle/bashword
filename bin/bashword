@@ -243,9 +243,9 @@ generate_passphrase() {
 
         if [[ "$number" -eq 0 ]] || [[ ";$lines" = *";${number}p;"* ]]; then
           i=$(( i-- ))
+        else
+          lines="${lines}${number}p;"
         fi
-
-        lines="${lines}${number}p;"
       done
 
       sed -n "$lines"
