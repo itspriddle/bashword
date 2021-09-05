@@ -411,14 +411,14 @@ generate_password() {
       length=$(( length - 1 ))
     done
 
-    if (( length > 0 )); then
+    for (( i=0; i < length; i++ )); do
       get_char "$(
         [[ "$digits" = y ]] && printf "[:digit:]"
         [[ "$symbols" = y ]] && printf "[:punct:]"
         [[ "$uppercase" = y ]] && printf "[:upper:]"
         [[ "$lowercase" = y ]] && printf "[:lower:]"
-      )" "$length"
-    fi
+      )"
+    done
   } | sort -R | awk '{ printf "%s", $1 }'
 }
 
