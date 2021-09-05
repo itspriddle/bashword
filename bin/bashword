@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# Usage: bashword
-# Summary: Generates passwords, passphrases, or PINs
+# Usage: bashword [OPTIONS]
+#        bashword [-LENGTH] [-n [COUNT]|-N] [-s [COUNT]|-S] [-u [COUNT]|-U|] [-l [COUNT]|-L] [-c COUNT]
+#        bashword [-p] [-LENGTH] [-F FILE] [-d CHAR] [-u [COUNT]] [-m LENGTH] [-M LENGTH] [-w LENGTH] [-c COUNT]
+#        bashword [-P] [-LENGTH] [-c COUNT]
 #
 # NAME
 #   bashword -- generates passwords, passphrase, or PINs
 #
 # SYNOPSIS
-#   bashword [options]
+#   bashword [OPTIONS]
+#   bashword [-LENGTH] [-n [COUNT]|-N] [-s [COUNT]|-S] [-u [COUNT]|-U|] [-l [COUNT]|-L] [-c COUNT]
+#   bashword [-p] [-LENGTH] [-F FILE] [-d CHAR] [-u [COUNT]] [-m LENGTH] [-M LENGTH] [-w LENGTH] [-c COUNT]
+#   bashword [-P] [-LENGTH] [-c COUNT]
 #
 # DESCRIPTION
 #   Generates passwords, passphrases, or PINs.
@@ -446,6 +451,21 @@ main() {
         echo "${0##*/} v$BASHWORD_VERSION"
         return 0
         ;;
+      -h|--help)
+        sed -ne '/^#/!q;s/^#$/# /;/^# /s/^# //p' < "$0" |
+          awk -v f="$1" '
+            f == "-h" && ($1 == "Usage:" || u) {
+              u=1
+              if ($0 == "") {
+                exit
+              } else {
+                print
+              }
+            }
+            f != "-h"
+            '
+        return 0
+        ;;
       -[0-9]*)
         length="${1:1}"
         shift
@@ -696,11 +716,6 @@ main() {
         fi
         count="${1#*=}"
         shift
-        ;;
-      -h|--help)
-        sed -ne '/^#/!q;s/^#$/# /;/^# /s/^# //p' < "$0" |
-          awk -v f="${1//-/}" 'f == "h" && $1 == "Usage:" { print; exit }; f != "h"'
-        return 1
         ;;
       *)
         warn "Invalid option '$1'"
