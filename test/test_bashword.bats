@@ -1,5 +1,10 @@
 load test_helper
 
+_assert_must_specify_value() {
+  assert_failure
+  assert_output "Must specify value for '$1'"
+}
+
 @test "bashword: generates a 20 character password with letters, numbers, and symbols by default" {
   run bashword
 
@@ -21,6 +26,12 @@ load test_helper
 
   run bashword -35
   _assert_results
+
+  run bashword --length
+  _assert_must_specify_value --length
+
+  run bashword --length=
+  _assert_must_specify_value --length=
 }
 
 @test "bashword --length LENGTH: errors if options prevent given LENGTH" {
@@ -60,6 +71,9 @@ load test_helper
 
   run bashword -s 4
   _assert_results 4
+
+  run bashword --symbols=
+  _assert_must_specify_value --symbols=
 }
 
 @test "bashword --numbers: generates a password with at least one number" {
@@ -85,6 +99,9 @@ load test_helper
 
   run bashword --numbers=6
   _assert_results 6
+
+  run bashword --numbers=
+  _assert_must_specify_value --numbers=
 }
 
 @test "bashword --lower: generates a password with at least one lowercase character" {
@@ -110,6 +127,9 @@ load test_helper
 
   run bashword --lower=6
   _assert_results 6
+
+  run bashword --lower=
+  _assert_must_specify_value --lower=
 }
 
 @test "bashword --upcase: generates a password with at least one uppercase character" {
@@ -135,6 +155,9 @@ load test_helper
 
   run bashword --upcase=6
   _assert_results 6
+
+  run bashword --upcase=
+  _assert_must_specify_value --upcase=
 }
 
 @test "bashword --no-symbols: generates a password with no symbols" {
@@ -241,6 +264,15 @@ load test_helper
 
   run bashword -c3
   _assert_results
+
+  run bashword --count=
+  _assert_must_specify_value --count=
+
+  run bashword --count
+  _assert_must_specify_value --count
+
+  run bashword -c
+  _assert_must_specify_value -c
 }
 
 @test "bashword --passphrase: generates a passphrase with 3 5-8 character words by default" {
@@ -292,6 +324,15 @@ load test_helper
 
   run bashword --passphrase -w6
   _assert_results
+
+  run bashword --passphrase --word-length=
+  _assert_must_specify_value --word-length=
+
+  run bashword --passphrase --word-length
+  _assert_must_specify_value --word-length
+
+  run bashword --passphrase -w
+  _assert_must_specify_value -w
 }
 
 @test "bashword --passphrase --max-word-length LENGTH generates a passphrase with words of the given max lengths" {
@@ -311,6 +352,15 @@ load test_helper
 
   run bashword --passphrase -M10
   _assert_results
+
+  run bashword --passphrase --max-word-length=
+  _assert_must_specify_value --max-word-length=
+
+  run bashword --passphrase --max-word-length
+  _assert_must_specify_value --max-word-length
+
+  run bashword --passphrase -M
+  _assert_must_specify_value -M
 }
 
 @test "bashword --passphrase --min-word-length LENGTH generates a passphrase with words of the given min lengths" {
@@ -330,6 +380,15 @@ load test_helper
 
   run bashword --passphrase -m5
   _assert_results
+
+  run bashword --passphrase --min-word-length=
+  _assert_must_specify_value --min-word-length=
+
+  run bashword --passphrase --min-word-length
+  _assert_must_specify_value --min-word-length
+
+  run bashword --passphrase -m
+  _assert_must_specify_value -m
 }
 
 @test "bashword --passphrase --upcase: upcases one word" {
@@ -407,6 +466,15 @@ load test_helper
 
   run bashword --passphrase -c3
   _assert_results
+
+  run bashword --passphrase --count=
+  _assert_must_specify_value --count=
+
+  run bashword --passphrase --count
+  _assert_must_specify_value --count
+
+  run bashword --passphrase -c
+  _assert_must_specify_value -c
 }
 
 @test "bashword --passphrase --dictionary-file FILE works with a custom word list" {
@@ -429,6 +497,15 @@ load test_helper
 
   run bashword --passphrase -F test/fixtures/words-windows
   _assert_results
+
+  run bashword --passphrase -F
+  _assert_must_specify_value -F
+
+  run bashword --passphrase --dictionary-file
+  _assert_must_specify_value --dictionary-file
+
+  run bashword --passphrase --dictionary-file=
+  _assert_must_specify_value --dictionary-file=
 }
 
 @test "bashword --pin: generates a numeric PIN 4 characters long by default" {
@@ -490,6 +567,15 @@ load test_helper
 
   run bashword --pin -c3
   _assert_results
+
+  run bashword --pin --count=
+  _assert_must_specify_value --count=
+
+  run bashword --pin --count
+  _assert_must_specify_value --count
+
+  run bashword --pin -c
+  _assert_must_specify_value -c
 }
 
 @test "BASHWORD_DEFAULT_PASSWORD_LENGTH sets a default password length" {
