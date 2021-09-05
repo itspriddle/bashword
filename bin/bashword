@@ -454,6 +454,32 @@ generate_pin() {
   get_char "[:digit:]" "$length" | awk '{ printf "%s", $1 }'
 }
 
+# Requires an option value to be passed
+#
+# $1 - The option name (i.e. `--length`)
+# $2 - The option value
+require_param() {
+  {
+    if [[ "$#" -eq 2 ]]; then
+      [[ -n "$2" ]] && printf "%s" "$2"
+    else
+      [[ -n "${1#*=}" ]] && printf "%s" "${1#*=}"
+    fi
+  } || {
+    warn "Must specify value for '$1'"
+    return 1
+  }
+}
+
+# If $2 does not start with -, print it, otherwise print y
+arg_y_or_count() {
+  if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
+    printf "%s" "$2"
+  else
+    printf y
+  fi
+}
+
 main() {
   local length numbers=y symbols=y dictionary_file upcase lower=y delimiter \
     min_word_length max_word_length style=password count=1 i
@@ -484,19 +510,11 @@ main() {
         shift
         ;;
       --length)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        length="$2"
+        length="$(require_param "$1" "${2-}")"
         shift 2
         ;;
       --length=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        length="${1#*=}"
+        length="$(require_param "$1")"
         shift
         ;;
       -p|--passphrase)
@@ -508,20 +526,11 @@ main() {
         shift
         ;;
       -n|--numbers)
-        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
-          numbers="$2"
-          shift 2
-        else
-          numbers=y
-          shift
-        fi
+        numbers="$(arg_y_or_count "$@")"
+        [[ "$numbers" = y ]] && shift || shift 2
         ;;
       --numbers=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        numbers="${1#*=}"
+        numbers="$(require_param "$1")"
         shift
         ;;
       -n*)
@@ -533,20 +542,11 @@ main() {
         shift
         ;;
       -s|--symbols)
-        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
-          symbols="$2"
-          shift 2
-        else
-          symbols=y
-          shift
-        fi
+        symbols="$(arg_y_or_count "$@")"
+        [[ "$symbols" = y ]] && shift || shift 2
         ;;
       --symbols=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        symbols="${1#*=}"
+        symbols="$(require_param "$1")"
         shift
         ;;
       -s*)
@@ -558,11 +558,7 @@ main() {
         shift
         ;;
       -F|--dictionary-file)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        dictionary_file="$2"
+        dictionary_file="$(require_param "$1" "$2")"
         shift 2
         ;;
       -F*)
@@ -570,32 +566,19 @@ main() {
         shift
         ;;
       --dictionary-file=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        dictionary_file="${1#*=}"
+        dictionary_file="$(require_param "$1")"
         shift
         ;;
       -u|--upcase)
-        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
-          upcase="$2"
-          shift 2
-        else
-          upcase=y
-          shift
-        fi
+        upcase="$(arg_y_or_count "$@")"
+        [[ "$upcase" = y ]] && shift || shift 2
         ;;
       -u*)
         upcase="${1:2}"
         shift
         ;;
       --upcase=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        upcase="${1#*=}"
+        upcase="$(require_param "$1")"
         shift
         ;;
       -U|--no-upcase)
@@ -603,20 +586,11 @@ main() {
         shift
         ;;
       -l|--lower)
-        if [[ $# -gt 1 ]] && [[ "${2:0:1}" != "-" ]]; then
-          lower="$2"
-          shift 2
-        else
-          lower=y
-          shift
-        fi
+        lower="$(arg_y_or_count "$@")"
+        [[ "$lower" = y ]] && shift || shift 2
         ;;
       --lower=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        lower="${1#*=}"
+        lower="$(require_param "$1")"
         shift
         ;;
       -l*)
@@ -628,11 +602,7 @@ main() {
         shift
         ;;
       -d|--delimiter)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        delimiter="$2"
+        delimiter="$(require_param "$1" "$2")"
         shift 2
         ;;
       -d*)
@@ -640,19 +610,11 @@ main() {
         shift
         ;;
       --delimiter=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        delimiter="${1#*=}"
+        delimiter="$(require_param "$1")"
         shift
         ;;
       -m|--min-word-length)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        min_word_length="$2"
+        min_word_length="$(require_param "$1" "$2")"
         shift 2
         ;;
       -m*)
@@ -660,19 +622,11 @@ main() {
         shift
         ;;
       --min-word-length=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        min_word_length="${1#*=}"
+        min_word_length="$(require_param "$1")"
         shift
         ;;
       -M|--max-word-length)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        max_word_length="$2"
+        max_word_length="$(require_param "$1" "$2")"
         shift 2
         ;;
       -M*)
@@ -680,20 +634,12 @@ main() {
         shift
         ;;
       --max-word-length=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        max_word_length="${1#*=}"
+        max_word_length="$(require_param "$1")"
         shift
         ;;
       -w|--word-length)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        min_word_length="$2"
-        max_word_length="$2"
+        min_word_length="$(require_param "$1" "$2")"
+        max_word_length="$min_word_length"
         shift 2
         ;;
       -w*)
@@ -702,20 +648,12 @@ main() {
         shift
         ;;
       --word-length=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        min_word_length="${1#*=}"
-        max_word_length="${1#*=}"
+        min_word_length="$(require_param "$1")"
+        max_word_length="$min_word_length"
         shift
         ;;
       -c|--count)
-        if [[ -z "${2-}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        count="$2"
+        count="$(require_param "$1" "$2")"
         shift 2
         ;;
       -c*)
@@ -723,11 +661,7 @@ main() {
         shift
         ;;
       --count=*)
-        if [[ -z "${1#*=}" ]]; then
-          warn "Must specify value for '$1'"
-          return 1
-        fi
-        count="${1#*=}"
+        count="$(require_param "$1")"
         shift
         ;;
       *)
