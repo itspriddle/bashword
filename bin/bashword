@@ -236,14 +236,13 @@ generate_passphrase() {
     if type shuf &> /dev/null; then
       shuf "-n$words"
     else
-      local lines="" number i
+      local lines="" number
 
-      for (( i=0; i < words; i++ )); do
+      while [[ "$words" -gt 0 ]]; do
         number="$(( ((RANDOM << 15 | RANDOM) << 15 | RANDOM ) % (line_max + 1) ))"
 
-        if [[ "$number" -eq 0 ]] || [[ ";$lines" = *";${number}p;"* ]]; then
-          i=$(( i-- ))
-        else
+        if [[ "$number" != "0" ]] && [[ ";$lines" != *";${number}p;"* ]]; then
+          words=$(( words - 1 ))
           lines="${lines}${number}p;"
         fi
       done
