@@ -26,12 +26,6 @@ _assert_must_specify_value() {
 
   run bashword -35
   _assert_results
-
-  run bashword --length
-  _assert_must_specify_value --length
-
-  run bashword --length=
-  _assert_must_specify_value --length=
 }
 
 @test "bashword --length LENGTH: errors if options prevent given LENGTH" {
@@ -46,6 +40,14 @@ _assert_must_specify_value() {
 
   run bashword -10 -s1 -u8 -l1 -n
   assert_failure
+}
+
+@test "bashword --length requires a value" {
+  run bashword --length
+  _assert_must_specify_value --length
+
+  run bashword --length=
+  _assert_must_specify_value --length=
 }
 
 @test "bashword --symbols: generates a password with symbols" {
@@ -71,7 +73,9 @@ _assert_must_specify_value() {
 
   run bashword -s 4
   _assert_results 4
+}
 
+@test "bashword --symbols requires a value" {
   run bashword --symbols=
   _assert_must_specify_value --symbols=
 }
@@ -99,7 +103,9 @@ _assert_must_specify_value() {
 
   run bashword --numbers=6
   _assert_results 6
+}
 
+@test "bashword --numbers requires a value" {
   run bashword --numbers=
   _assert_must_specify_value --numbers=
 }
@@ -127,7 +133,9 @@ _assert_must_specify_value() {
 
   run bashword --lower=6
   _assert_results 6
+}
 
+@test "bashword --lower requires a value" {
   run bashword --lower=
   _assert_must_specify_value --lower=
 }
@@ -264,7 +272,9 @@ _assert_must_specify_value() {
 
   run bashword -c3
   _assert_results
+}
 
+@test "bashword --count requires a value" {
   run bashword --count=
   _assert_must_specify_value --count=
 
@@ -307,6 +317,14 @@ _assert_must_specify_value() {
   _assert_results
 }
 
+@test "bashword --passphrase --length requires a value" {
+  run bashword --passphrase --length
+  _assert_must_specify_value --length
+
+  run bashword --passphrase --length=
+  _assert_must_specify_value --length=
+}
+
 @test "bashword --passphrase --word-length LENGTH: generates a passphrase with words of the exact length specified" {
   _assert_results() {
     assert_output --regexp "^[[:alpha:]]{6}-[[:alpha:]]{6}-[[:alpha:]]{6}$"
@@ -327,7 +345,9 @@ _assert_must_specify_value() {
 
   run bashword --passphrase --word-length=
   _assert_must_specify_value --word-length=
+}
 
+@test "bashword --passphrase --word-length requires a value" {
   run bashword --passphrase --word-length
   _assert_must_specify_value --word-length
 
@@ -352,7 +372,9 @@ _assert_must_specify_value() {
 
   run bashword --passphrase -M10
   _assert_results
+}
 
+@test "bashword --passphrase --max-word-length requires a value" {
   run bashword --passphrase --max-word-length=
   _assert_must_specify_value --max-word-length=
 
@@ -380,7 +402,9 @@ _assert_must_specify_value() {
 
   run bashword --passphrase -m5
   _assert_results
+}
 
+@test "bashword --passphrase --min-word-length requires a value" {
   run bashword --passphrase --min-word-length=
   _assert_must_specify_value --min-word-length=
 
@@ -436,6 +460,17 @@ _assert_must_specify_value() {
   _assert_results
 }
 
+@test "bashword --passphrase --delimiter requires a value" {
+  run bashword --passphrase --delimiter=
+  _assert_must_specify_value --delimiter=
+
+  run bashword --passphrase --delimiter
+  _assert_must_specify_value --delimiter
+
+  run bashword --passphrase -d
+  _assert_must_specify_value -d
+}
+
 @test "bashword --passphrase --count COUNT: generates the given number of passphrases" {
   _assert_results() {
     assert_equal "${#lines[*]}" 3
@@ -466,7 +501,9 @@ _assert_must_specify_value() {
 
   run bashword --passphrase -c3
   _assert_results
+}
 
+@test "bashword --passphrase --count requires a value" {
   run bashword --passphrase --count=
   _assert_must_specify_value --count=
 
@@ -497,7 +534,9 @@ _assert_must_specify_value() {
 
   run bashword --passphrase -F test/fixtures/words-windows
   _assert_results
+}
 
+@test "bashword --passphrase --dictionary-file requires a value" {
   run bashword --passphrase -F
   _assert_must_specify_value -F
 
@@ -540,6 +579,14 @@ _assert_must_specify_value() {
   _assert_results
 }
 
+@test "bashword --pin --length requires a value" {
+  run bashword --pin --length
+  _assert_must_specify_value --length
+
+  run bashword --pin --length=
+  _assert_must_specify_value --length=
+}
+
 @test "bashword --pin --count COUNT: generates the given number of PINs" {
   _assert_results() {
     assert_equal "${#lines[*]}" 3
@@ -567,7 +614,9 @@ _assert_must_specify_value() {
 
   run bashword --pin -c3
   _assert_results
+}
 
+@test "bashword --pin --count requires a value" {
   run bashword --pin --count=
   _assert_must_specify_value --count=
 
