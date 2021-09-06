@@ -165,6 +165,7 @@ variables (typically in `~/.profile` or `~/.bash_profile` for Bash users, or
 `~/.zshenv` for ZSH users). Configuring bashword is completely optional.
 
 - `$BASHWORD_DEFAULT_PASSWORD_LENGTH`: The default password length to use.
+- `$BASHWORD_PASSWORD_MIN_LENGTH`: The minimum password length allowed.
 - `$BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST`: The default word list file to use
   for generating passphrase words.
 - `$BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH`: The default minimum word
@@ -180,6 +181,7 @@ variables (typically in `~/.profile` or `~/.bash_profile` for Bash users, or
 Full example:
 
     export BASHWORD_DEFAULT_PASSWORD_LENGTH=30
+    export BASHWORD_PASSWORD_MIN_LENGTH=6
     export BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="$HOME/.words"
     export BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH=4
     export BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH=4

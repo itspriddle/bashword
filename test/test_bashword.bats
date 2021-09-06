@@ -595,6 +595,15 @@ load test_helper
   assert_success
 }
 
+@test "BASHWORD_PASSWORD_MIN_LENGTH sets a min password length" {
+  BASHWORD_PASSWORD_MIN_LENGTH=6 run bashword -5
+  assert_failure
+  assert_output "Length must be at least 6 characters!"
+
+  BASHWORD_PASSWORD_MIN_LENGTH=6 run bashword -6
+  assert_success
+}
+
 @test "BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST sets a default passphrase word list" {
   BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="test/fixtures/words" run bashword -p
   assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"

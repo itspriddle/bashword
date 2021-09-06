@@ -165,6 +165,9 @@
 #   $BASHWORD_DEFAULT_PASSWORD_LENGTH
 #     The default password length.
 #
+#   $BASHWORD_PASSWORD_MIN_LENGTH
+#     The minimum password length allowed.
+#
 #   $BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST
 #     The default word list file to use for generating passphrase words.
 #
@@ -186,6 +189,7 @@
 #   Full example:
 #
 #       export BASHWORD_DEFAULT_PASSWORD_LENGTH=30
+#       export BASHWORD_PASSWORD_MIN_LENGTH=6
 #       export BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="$HOME/.words"
 #       export BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH=4
 #       export BASHWORD_DEFAULT_PASSPHRASE_MAX_WORD_LENGTH=4
@@ -219,6 +223,9 @@ GITHUB_WORD_LIST="https://gist.github.com/itspriddle/3527c7018aeb32f456c3cfa3f6b
 
 # Default password length
 DEFAULT_PASSWORD_LENGTH="${BASHWORD_DEFAULT_PASSWORD_LENGTH:-20}"
+
+# Password min length
+PASSWORD_MIN_LENGTH="${BASHWORD_PASSWORD_MIN_LENGTH:-8}"
 
 # Default min word length for passphrase words
 DEFAULT_PASSPHRASE_MIN_WORD_LENGTH="${BASHWORD_DEFAULT_PASSPHRASE_MIN_WORD_LENGTH:-5}"
@@ -364,8 +371,8 @@ generate_password() {
   if ! [[ "$length" =~ ^[0-9]+$ ]]; then
     warn "Length must be a number!"
     return 1
-  elif [[ "$length" -lt 8 ]]; then
-    warn "Length must be at least 8 characters!"
+  elif [[ "$length" -lt "$PASSWORD_MIN_LENGTH" ]]; then
+    warn "Length must be at least $PASSWORD_MIN_LENGTH characters!"
     return 1
   elif [[ "$digits" != y ]] && ! [[ "$digits" =~ ^[0-9]+$ ]]; then
     warn "Digit count must be a number!"
