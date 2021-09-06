@@ -1,10 +1,5 @@
 load test_helper
 
-_assert_must_specify_value() {
-  assert_failure
-  assert_output "Must specify value for '$1'"
-}
-
 @test "bashword: generates a 20 character password with letters, numbers, and symbols by default" {
   run bashword
 
@@ -44,10 +39,10 @@ _assert_must_specify_value() {
 
 @test "bashword --length requires a value" {
   run bashword --length
-  _assert_must_specify_value --length
+  assert_must_specify_value --length
 
   run bashword --length=
-  _assert_must_specify_value --length=
+  assert_must_specify_value --length=
 }
 
 @test "bashword --symbols: generates a password with symbols" {
@@ -77,7 +72,7 @@ _assert_must_specify_value() {
 
 @test "bashword --symbols requires a value" {
   run bashword --symbols=
-  _assert_must_specify_value --symbols=
+  assert_must_specify_value --symbols=
 }
 
 @test "bashword --numbers: generates a password with at least one number" {
@@ -107,7 +102,7 @@ _assert_must_specify_value() {
 
 @test "bashword --numbers requires a value" {
   run bashword --numbers=
-  _assert_must_specify_value --numbers=
+  assert_must_specify_value --numbers=
 }
 
 @test "bashword --lower: generates a password with at least one lowercase character" {
@@ -137,7 +132,7 @@ _assert_must_specify_value() {
 
 @test "bashword --lower requires a value" {
   run bashword --lower=
-  _assert_must_specify_value --lower=
+  assert_must_specify_value --lower=
 }
 
 @test "bashword --upcase: generates a password with at least one uppercase character" {
@@ -165,7 +160,7 @@ _assert_must_specify_value() {
   _assert_results 6
 
   run bashword --upcase=
-  _assert_must_specify_value --upcase=
+  assert_must_specify_value --upcase=
 }
 
 @test "bashword --no-symbols: generates a password with no symbols" {
@@ -247,17 +242,7 @@ _assert_must_specify_value() {
 
 @test "bashword --count COUNT: generates multiple passwords" {
   _assert_results() {
-    assert_equal "${#lines[*]}" 3
-
-    echo "${lines[0]}" | grep -E -q "^[[:alnum:][:punct:]]{20}$" ||
-      fail "line 0: ${lines[0]} didn't match expression"
-
-    echo "${lines[1]}" | grep -E -q "^[[:alnum:][:punct:]]{20}$" ||
-      fail "line 1: ${lines[1]} didn't match expression"
-
-    echo "${lines[2]}" | grep -E -q "^[[:alnum:][:punct:]]{20}$" ||
-      fail "line 2: ${lines[2]} didn't match expression"
-
+    assert_output_lines_match 3 "^[[:alnum:][:punct:]]{20}$"
     assert_success
   }
 
@@ -276,13 +261,13 @@ _assert_must_specify_value() {
 
 @test "bashword --count requires a value" {
   run bashword --count=
-  _assert_must_specify_value --count=
+  assert_must_specify_value --count=
 
   run bashword --count
-  _assert_must_specify_value --count
+  assert_must_specify_value --count
 
   run bashword -c
-  _assert_must_specify_value -c
+  assert_must_specify_value -c
 }
 
 @test "bashword --passphrase: generates a passphrase with 3 5-8 character words by default" {
@@ -319,10 +304,10 @@ _assert_must_specify_value() {
 
 @test "bashword --passphrase --length requires a value" {
   run bashword --passphrase --length
-  _assert_must_specify_value --length
+  assert_must_specify_value --length
 
   run bashword --passphrase --length=
-  _assert_must_specify_value --length=
+  assert_must_specify_value --length=
 }
 
 @test "bashword --passphrase --word-length LENGTH: generates a passphrase with words of the exact length specified" {
@@ -344,15 +329,15 @@ _assert_must_specify_value() {
   _assert_results
 
   run bashword --passphrase --word-length=
-  _assert_must_specify_value --word-length=
+  assert_must_specify_value --word-length=
 }
 
 @test "bashword --passphrase --word-length requires a value" {
   run bashword --passphrase --word-length
-  _assert_must_specify_value --word-length
+  assert_must_specify_value --word-length
 
   run bashword --passphrase -w
-  _assert_must_specify_value -w
+  assert_must_specify_value -w
 }
 
 @test "bashword --passphrase --max-word-length LENGTH generates a passphrase with words of the given max lengths" {
@@ -376,13 +361,13 @@ _assert_must_specify_value() {
 
 @test "bashword --passphrase --max-word-length requires a value" {
   run bashword --passphrase --max-word-length=
-  _assert_must_specify_value --max-word-length=
+  assert_must_specify_value --max-word-length=
 
   run bashword --passphrase --max-word-length
-  _assert_must_specify_value --max-word-length
+  assert_must_specify_value --max-word-length
 
   run bashword --passphrase -M
-  _assert_must_specify_value -M
+  assert_must_specify_value -M
 }
 
 @test "bashword --passphrase --min-word-length LENGTH generates a passphrase with words of the given min lengths" {
@@ -406,13 +391,13 @@ _assert_must_specify_value() {
 
 @test "bashword --passphrase --min-word-length requires a value" {
   run bashword --passphrase --min-word-length=
-  _assert_must_specify_value --min-word-length=
+  assert_must_specify_value --min-word-length=
 
   run bashword --passphrase --min-word-length
-  _assert_must_specify_value --min-word-length
+  assert_must_specify_value --min-word-length
 
   run bashword --passphrase -m
-  _assert_must_specify_value -m
+  assert_must_specify_value -m
 }
 
 @test "bashword --passphrase --upcase: upcases one word" {
@@ -462,31 +447,18 @@ _assert_must_specify_value() {
 
 @test "bashword --passphrase --delimiter requires a value" {
   run bashword --passphrase --delimiter=
-  _assert_must_specify_value --delimiter=
+  assert_must_specify_value --delimiter=
 
   run bashword --passphrase --delimiter
-  _assert_must_specify_value --delimiter
+  assert_must_specify_value --delimiter
 
   run bashword --passphrase -d
-  _assert_must_specify_value -d
+  assert_must_specify_value -d
 }
 
 @test "bashword --passphrase --count COUNT: generates the given number of passphrases" {
   _assert_results() {
-    assert_equal "${#lines[*]}" 3
-
-    echo "${lines[0]}" |
-      grep -E -q "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$" ||
-      fail "line 0: ${lines[0]} didn't match expression"
-
-    echo "${lines[1]}" |
-      grep -E -q "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$" ||
-      fail "line 1: ${lines[1]} didn't match expression"
-
-    echo "${lines[2]}" |
-      grep -E -q "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$" ||
-      fail "line 1: ${lines[2]} didn't match expression"
-
+    assert_output_lines_match 3 "^[[:alpha:]]{5,10}-[[:alpha:]]{5,10}-[[:alpha:]]{5,10}$"
     assert_success
   }
 
@@ -505,13 +477,13 @@ _assert_must_specify_value() {
 
 @test "bashword --passphrase --count requires a value" {
   run bashword --passphrase --count=
-  _assert_must_specify_value --count=
+  assert_must_specify_value --count=
 
   run bashword --passphrase --count
-  _assert_must_specify_value --count
+  assert_must_specify_value --count
 
   run bashword --passphrase -c
-  _assert_must_specify_value -c
+  assert_must_specify_value -c
 }
 
 @test "bashword --passphrase --dictionary-file FILE works with a custom word list" {
@@ -538,13 +510,13 @@ _assert_must_specify_value() {
 
 @test "bashword --passphrase --dictionary-file requires a value" {
   run bashword --passphrase -F
-  _assert_must_specify_value -F
+  assert_must_specify_value -F
 
   run bashword --passphrase --dictionary-file
-  _assert_must_specify_value --dictionary-file
+  assert_must_specify_value --dictionary-file
 
   run bashword --passphrase --dictionary-file=
-  _assert_must_specify_value --dictionary-file=
+  assert_must_specify_value --dictionary-file=
 }
 
 @test "bashword --pin: generates a numeric PIN 4 characters long by default" {
@@ -581,25 +553,15 @@ _assert_must_specify_value() {
 
 @test "bashword --pin --length requires a value" {
   run bashword --pin --length
-  _assert_must_specify_value --length
+  assert_must_specify_value --length
 
   run bashword --pin --length=
-  _assert_must_specify_value --length=
+  assert_must_specify_value --length=
 }
 
 @test "bashword --pin --count COUNT: generates the given number of PINs" {
   _assert_results() {
-    assert_equal "${#lines[*]}" 3
-
-    echo "${lines[0]}" | grep -E -q "^[0-9]{4}$" ||
-      fail "line 0: ${lines[0]} didn't match expression"
-
-    echo "${lines[1]}" | grep -E -q "^[0-9]{4}$" ||
-      fail "line 1: ${lines[1]} didn't match expression"
-
-    echo "${lines[2]}" | grep -E -q "^[0-9]{4}$" ||
-      fail "line 2: ${lines[2]} didn't match expression"
-
+    assert_output_lines_match 3 "^[0-9]{4}$"
     assert_success
   }
 
@@ -618,13 +580,13 @@ _assert_must_specify_value() {
 
 @test "bashword --pin --count requires a value" {
   run bashword --pin --count=
-  _assert_must_specify_value --count=
+  assert_must_specify_value --count=
 
   run bashword --pin --count
-  _assert_must_specify_value --count
+  assert_must_specify_value --count
 
   run bashword --pin -c
-  _assert_must_specify_value -c
+  assert_must_specify_value -c
 }
 
 @test "BASHWORD_DEFAULT_PASSWORD_LENGTH sets a default password length" {
