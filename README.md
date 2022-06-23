@@ -243,6 +243,13 @@ your `$MANPATH`. This can be done by adding the following to `~/.manpath`
 
     MANDATORY_MANPATH /home/USER/.manpath
 
+### Install via Homebrew on macOS
+
+If you are on macOS and use [Homebrew](https://brew.sh), you can install
+bashword with:
+
+    brew install itspriddle/brews/bashword
+
 ### Copy the script manually
 
 The `bashword` script can also be downloaded manually and saved to any
