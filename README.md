@@ -246,7 +246,7 @@ your `$MANPATH`. This can be done by adding the following to `~/.manpath`
 ### Copy the script manually
 
 The `bashword` script can also be downloaded manually and saved to any
-director in your `$PATH` (such as `/usr/local/bin` or `~/.local/bin` as
+directory in your `$PATH` (such as `/usr/local/bin` or `~/.local/bin` as
 described above).
 
     curl -s -L https://github.com/itspriddle/bashword/raw/master/bin/bashword > /tmp/bashword
