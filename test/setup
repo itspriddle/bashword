@@ -24,6 +24,6 @@ clone() {
 
 echo "Setting up test environment..."
 
-clone bats-core    v1.3.0 test/bats
+clone bats-core    v1.9.0 test/bats
 clone bats-support master test/test_helper/bats-support
 clone bats-assert  master test/test_helper/bats-assert

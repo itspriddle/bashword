@@ -6,7 +6,7 @@ jobs:
   shellcheck:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run shellcheck
         run: |
           bash --version
@@ -16,7 +16,11 @@ jobs:
     name: bats - Ubuntu
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      # - name: Install /usr/share/dict/words
+      #   run: |
+      #     sudo apt-get update -y
+      #     sudo apt-get install wamerican
       - name: Run bats tests on Ubuntu
         shell: 'script -q -e -c "bash {0}"'
         env:
@@ -30,18 +34,18 @@ jobs:
     name: bats - Windows
     runs-on: windows-2019
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run bats tests on Windows
         run: |
           bash --version
           bash -c "time ./test/setup"
-          bash -c "time BATS_NO_PARALLELIZE_ACROSS_FILES=1 BATS_NUMBER_OF_PARALLEL_JOBS=2 ./test/bats/bin/bats -t test"
+          bash -c "time ./test/bats/bin/bats -t test"
 
   macos:
     name: bats - macOS
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install unbuffer via expect
         run: brew install expect
       - name: Run bats tests on macOS
