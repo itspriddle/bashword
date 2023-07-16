@@ -73,7 +73,7 @@ long.
     For passphrases, this option specifies the path to a dictionary file
     used to select words for the passphrase, and defaults to
     `/usr/share/dict/words`. If the default file cannot be found, a
-    temporary wordlist will be downloaded from GitHub (see WORD LISTS
+    temporary wordlist will be downloaded from GitHub (see Word Lists
     below). For passwords and PINs, this option has no effect.
 
 *-u [COUNT]*, *--upcase [COUNT]*  
@@ -188,6 +188,12 @@ Full example:
     export BASHWORD_DEFAULT_PASSPHRASE_WORD_COUNT=5
     export BASHWORD_DEFAULT_PASSPHRASE_DELIMITER=":"
     export BASHWORD_DEFAULT_PIN_LENGTH=6
+
+### Word Lists
+
+By default passphrases are generated using `/usr/share/dict/words`. If that
+file does not exist, one will be downloaded automatically from GitHub under
+`/tmp/bashwords-words`.
 
 ## Installation
 

@@ -508,6 +508,14 @@ load test_helper
   _assert_results
 }
 
+@test "bashword --passphrase downloads a dictionary file if required" {
+  BASHWORD_DEFAULT_PASSPHRASE_WORD_LIST="test/fixtures/words-invalid-totally-not-real" \
+    run bashword -p
+
+  assert_output --regexp "^[[:alpha:]]{5,8}-[[:alpha:]]{5,8}-[[:alpha:]]{5,8}$"
+  assert_success
+}
+
 @test "bashword --passphrase --dictionary-file requires a value" {
   run bashword --passphrase -F
   assert_must_specify_value -F
