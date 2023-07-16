@@ -307,6 +307,18 @@ The roff file can be generated using:
 This will regenerate `share/man/man1/bashword.1` from the contents of
 `doc/man/bashword.1.md`. Both files should be committed to the repo.
 
+## Bug Reports
+
+Issues can be reported on GitHub:
+
+<https://github.com/itspriddle/bashword/issues>
+
+## Author
+
+Joshua Priddle <jpriddle@me.com>
+
+<https://github.com/itspriddle/bashword#readme>
+
 ## License
 
 MIT License. See [LICENSE](./LICENSE) in this repo.
