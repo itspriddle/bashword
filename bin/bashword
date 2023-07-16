@@ -202,6 +202,21 @@
 #   that file does not exist, one will be downloaded automatically from GitHub
 #   under `/tmp/bashwords-words`.
 #
+# BUG REPORTS
+#   Issues can be reported on GitHub:
+#
+#   https://github.com/itspriddle/bashword/issues
+#
+# AUTHOR
+#   Joshua Priddle <jpriddle@me.com>
+#
+#   https://github.com/itspriddle/bashword#readme
+#
+# LICENSE
+#   MIT License
+#
+#   Copyright (c) 2021 Joshua Priddle <jpriddle@me.com>
+#
 # SEE ALSO
 #   random(4)
 
