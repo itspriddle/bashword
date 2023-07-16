@@ -196,7 +196,7 @@ file does not exist, one will be downloaded automatically from GitHub under
 
 Issues can be reported on GitHub:
 
-<https://github.com/itspriddle/bashword/issues>
+https://github.com/itspriddle/bashword/issues
 
 ## AUTHOR
 
