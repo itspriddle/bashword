@@ -4,7 +4,7 @@ INSTALL_FILES=`find $(DIRS) -type f`
 
 PREFIX?=/usr/local
 
-VERSION?=HEAD
+VERSION?=$(error Must specify version, eg: VERSION=v0.0.0)
 
 .PHONY: help
 help: ## show this help text
@@ -48,3 +48,8 @@ uninstall: ## uninstall bashword from PREFIX
 archive: ## create a zip archive of the current version
 	mkdir -p pkg
 	git archive --prefix=bashword-$(VERSION)/ --output=pkg/bashword-$(VERSION).zip $(VERSION) $(INSTALL_FILES)
+
+.PHONY: release
+release: ## create a new tag and push to GitHub
+	git tag -m "$(VERSION)" $(VERSION)
+	git push --tags
