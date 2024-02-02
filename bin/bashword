@@ -91,6 +91,10 @@
 #       to include no uppercase words at all. For PINs, this option has no
 #       effect.
 #
+#   -T, --toggle-first-char
+#       For passphrases, this option toggles the first character of each word.
+#       For passwords and PINs, this option has no effect.
+#
 #   -l [COUNT], --lower [COUNT]
 #       For passwords, this option specifies the number of lowercase
 #       characters to include in the generated password. If no COUNT is
@@ -274,7 +278,7 @@ warn() {
 # $6 - delimiter
 generate_passphrase() {
   local words="$1" dict="$2" upcase="$3" length_min="$4" length_max="$5" \
-    delimiter="$6"
+    delimiter="$6" togglefirstchar="$7"
 
   if ! [[ "$length_min" =~ ^[0-9]+$ ]]; then
     warn "Min length must be a number!"
@@ -329,9 +333,19 @@ generate_passphrase() {
   } | while read -r word; do
       if [[ "${upcase//y/1}" -gt 0 ]]; then
         upcase="$(( ${upcase//y/1} - 1 ))"
-        tr '[:lower:]' '[:upper:]' <<< "$word"
+        w=$(tr '[:lower:]' '[:upper:]' <<< "$word")
+        if [[ "$togglefirstchar" -gt 0 ]]; then
+          echo "${w,}"
+        else
+          echo "$w"
+        fi
       else
-        tr '[:upper:]' '[:lower:]' <<< "$word"
+        w=$(tr '[:upper:]' '[:lower:]' <<< "$word")
+        if [[ "$togglefirstchar" -gt 0 ]]; then
+          echo "${w^}"
+        else
+          echo "$w"
+        fi
       fi
     done | sort -R | paste -s -d "$delimiter" - | tr -d '\n'
 }
@@ -504,7 +518,7 @@ arg_y_or_count() {
 
 main() {
   local length numbers=y symbols=y dictionary_file upcase lower=y delimiter \
-    min_word_length max_word_length style=password count=1 i
+    min_word_length max_word_length style=password count=1 i togglefirstchar
 
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -607,6 +621,10 @@ main() {
         ;;
       -U|--no-upcase)
         upcase=0
+        shift
+        ;;
+      -T|--toggle-first-char)
+        togglefirstchar=1
         shift
         ;;
       -l|--lower)
@@ -714,7 +732,8 @@ main() {
         "${upcase:-}" \
         "${min_word_length:-$DEFAULT_PASSPHRASE_MIN_WORD_LENGTH}" \
         "${max_word_length:-$DEFAULT_PASSPHRASE_MAX_WORD_LENGTH}" \
-        "${delimiter:-$DEFAULT_PASSPHRASE_DELIMITER}"
+        "${delimiter:-$DEFAULT_PASSPHRASE_DELIMITER}" \
+        "${togglefirstchar:-}"
     elif [[ "$style" = pin ]]; then
       generate_pin "${length:-$DEFAULT_PIN_LENGTH}"
     fi
